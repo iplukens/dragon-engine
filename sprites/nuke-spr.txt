@@ -1,0 +1,6 @@
+frames 1
+width 3
+height 1
+o=<
+end
+eof
