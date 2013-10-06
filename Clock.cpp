@@ -4,6 +4,8 @@
  *  Created on: Sep 12, 2013
  *      Author: ian
  */
+
+#ifdef MACOS
 #ifndef NULL
 #define NULL   ((void *) 0)
 #endif
@@ -38,3 +40,38 @@ long int Clock::split(){
 	long int result = new_millis - prev_ts;
 	return result;
 }
+#elif CYGWIN
+#include <time.h>
+
+#include "Clock.h"
+
+Clock::Clock(){
+	clock_gettime(CLOCK_REALTIME, &prev_ts);
+}
+
+long int Clock::delta(){
+	struct timespec current_ts;
+	clock_gettime(CLOCK_REALTIME, &current_ts);
+
+	long int before_msec, after_msec;
+	before_msec = prev_ts.tv_sec*1000 + prev_ts.tv_nsec/10000000;
+	after_msec = current_ts.tv_sec*1000 + current_ts.tv_nsec/1000000;
+	long int elapsed_time = after_msec - before_msec;
+
+	prev_ts = current_ts;
+
+	return elapsed_time;
+}
+
+long int Clock::split(){
+	struct timespec current_ts;
+	clock_gettime(CLOCK_REALTIME, &current_ts);
+
+	long int before_msec, after_msec;
+	before_msec = prev_ts.tv_sec*1000 + prev_ts.tv_nsec/10000000;
+	after_msec = current_ts.tv_sec*1000 + current_ts.tv_nsec/1000000;
+	long int elapsed_time = after_msec - before_msec;
+
+	return elapsed_time;
+}
+#endif
