@@ -53,10 +53,10 @@ OBJECTS= $(GAMESRC:.cpp=.o) $(ENGINESRC:.cpp=.o)
 all: $(EXECUTABLE) Makefile
 
 $(EXECUTABLE): $(ENG) $(OBJECTS) $(GAME) $(ENGINESRC) $(GAMESRC)
-	$(CC) $(GAME) $(OBJECTS) $(ENG) -o $@ -I$(INCPATH) $(LDFLAGS)
+	$(CC) $(GAME) $(OBJECTS) $(ENG) -o $@ -I$(INCPATH) $(LDFLAGS) $(PLATFORM)
 
 .cpp.o: 
-	$(CC) -c $(DEBUG) -I$(INCPATH) $< -o $@
+	$(CC) -c $(DEBUG) $(PLATFORM) -I$(INCPATH) $< -o $@
 
 clean:
 	rm -rf $(OBJECTS) $(EXECUTABLE) core dragonfly.log Makefile.bak *~

@@ -9,6 +9,11 @@
 #include "LogManager.h"
 #include <iostream>
 #include <fstream>
+
+#ifdef CYGWIN
+#include <stdlib.h>     /* atoi */
+#endif
+
 using std::ifstream;
 using std::cout;
 using std::endl;
