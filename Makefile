@@ -24,7 +24,8 @@ GAMESRC = Bullet.cpp \
 	Hero.cpp \
 	MaxHealthPickup.cpp \
 	MazePiece.cpp \
-	RapidFire.cpp
+	RapidFire.cpp \
+	EventHeroMove.cpp
 ENGINESRC= Event.cpp \
 	LogManager.cpp \
 	Clock.cpp \
@@ -45,7 +46,7 @@ ENGINESRC= Event.cpp \
 	Frame.cpp \
 	ResourceManager.cpp \
 	EventOut.cpp \
-	Box.cpp
+	Box.cpp 
 GAME= game.cpp
 EXECUTABLE= game		
 OBJECTS= $(GAMESRC:.cpp=.o) $(ENGINESRC:.cpp=.o)
