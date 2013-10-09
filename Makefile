@@ -46,7 +46,11 @@ ENGINESRC= Event.cpp \
 	Frame.cpp \
 	ResourceManager.cpp \
 	EventOut.cpp \
-	Box.cpp 
+	Box.cpp \
+	ViewObject.cpp \
+	EventView.cpp \
+	utility.cpp
+
 GAME= game.cpp
 EXECUTABLE= game		
 OBJECTS= $(GAMESRC:.cpp=.o) $(ENGINESRC:.cpp=.o)
