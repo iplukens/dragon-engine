@@ -12,6 +12,8 @@
 #include "EventCollision.h"
 #include "EventOut.h"
 
+bool boxIntersectsBox(Box box1, Box box2);
+
 WorldManager &WorldManager::getInstance() {
 	static WorldManager instance; // Guaranteed to be destroyed.
 								  // Instantiated on first use.
@@ -129,28 +131,45 @@ int WorldManager::moveObject(Object *p_o, Position where) {
 	return result;
 }
 
+bool boxIntersectsBox(Box box1, Box box2) {
+	bool x_overlap = (box1.getCorner().getX() <= box2.getCorner().getX()
+			<= box1.getCorner().getX() + box1.getHorizontal())
+			|| (box2.getCorner().getX() <= box1.getCorner().getX()
+					<= box2.getCorner().getX() + box2.getHorizontal());
+	bool y_overlap = (box1.getCorner().getY() <= box2.getCorner().getY()
+			<= box1.getCorner().getY() + box1.getVertical())
+			|| (box2.getCorner().getY() <= box1.getCorner().getY()
+					<= box2.getCorner().getY() + box2.getVertical());
+	return x_overlap && y_overlap;
+}
+
 // Return list of Objects collided with at Position `where'.
 // Collisions only with solid Objects.
 // Does not consider if p_o is solid or not.
 ObjectList WorldManager::isCollision(Object *p_o, Position where) {
 	// Make empty list.
 	ObjectList collision_list;
+	Box temp_box_1 = p_o->getBox();
+	Position corner1 = temp_box_1.getCorner();
+	corner1.setX(corner1.getX() + where.getX());
+	corner1.setY(corner1.getY() + where.getY());
+	temp_box_1.setCorner(corner1);
 	// Iterate through all objects.
 	ObjectListIterator i(&updates);
 	for (i.first(); not i.isDone(); i.next()) {
 		Object *p_temp_o = i.currentObject();
+		Box temp_box = p_temp_o->getBox();
+		Position corner = temp_box.getCorner();
+		corner.setX(corner.getX() + p_temp_o->getPosition().getX());
+		corner.setY(corner.getY() + p_temp_o->getPosition().getY());
+		temp_box.setCorner(corner);
 		if (p_temp_o != p_o) {
-			if (positionsIntersect(p_temp_o->getPosition(), where)
-					&& p_temp_o->isSolid()) {
+			if (boxIntersectsBox(temp_box, temp_box_1) && p_temp_o->isSolid()) {
 				collision_list.insert(p_temp_o);
 			}
 		}
 	}
 	return collision_list;
-}
-
-bool WorldManager::positionsIntersect(Position p1, Position p2) {
-	return p1.getX() == p2.getX() && p1.getY() == p2.getY();
 }
 
 bool WorldManager::isValid(string event_name) {

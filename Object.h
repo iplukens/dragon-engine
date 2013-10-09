@@ -12,6 +12,7 @@
 #include "Position.h"
 #include "Event.h"
 #include "Sprite.h"
+#include "Box.h"
 using std::string;
 
 #define MAX_OBJ_EVENTS 100
@@ -24,6 +25,7 @@ SPECTRAL // Objects don't cause collisions.
 
 class Object {
 private:
+	Box box; // Box for sprite boundary & collisions
 	enum Solidness solidness;
 	int altitude;
 	int event_count; // number of events the object is registered for
@@ -98,6 +100,10 @@ public:
 	int getSpriteSlowdown();
 	void setSpriteSlowdownCount(int new_sprite_slowdown_count);
 	int getSpriteSlowdownCount();
+	// set object's bounding box
+	void setBox(Box new_box);
+	// get object's bounging box
+	Box getBox();
 };
 
 #endif

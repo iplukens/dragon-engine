@@ -33,6 +33,7 @@ Object::Object() {
 	sprite_slowdown = 0;
 	sprite_slowdown_count = 0;
 	p_sprite = NULL;
+	box = Box();
 }
 
 Object::~Object() {
@@ -233,6 +234,7 @@ void Object::setSprite(Sprite *p_new_sprite) {
 // If set_box is true, set bounding box to size of Sprite.
 void Object::setSprite(Sprite *p_new_sprite, bool set_box) {
 	p_sprite = p_new_sprite;
+	box = Box(pos, p_new_sprite->getWidth(), p_new_sprite->getHeight());
 }
 // Return pointer to Sprite associated with this object.
 Sprite * Object::getSprite() {
@@ -268,4 +270,12 @@ void Object::setSpriteSlowdownCount(int new_sprite_slowdown_count) {
 }
 int Object::getSpriteSlowdownCount() {
 	return sprite_slowdown_count;
+}
+
+void Object::setBox(Box new_box){
+	box = new_box;
+}
+
+Box Object::getBox(){
+	return box;
 }

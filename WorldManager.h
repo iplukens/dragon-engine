@@ -21,7 +21,6 @@ private:
 	WorldManager();
 	WorldManager (WorldManager const&);    ///< Don't allow copy.
 	void operator=(WorldManager const&); ///< Don't allow assignment.
-	bool positionsIntersect(Position p1, Position p2);
 public:
 	static WorldManager &getInstance();
 	~WorldManager();

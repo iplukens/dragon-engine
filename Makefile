@@ -18,7 +18,14 @@ PLATFORM= -DMACOS  		# uncomment for macos
 LDFLAGS= -lncurses 		# uncomment for macos
 INCPATH= include		# path to engine includes
 #ENG= lib/libdragonfly.a		# dragonfly engine
-GAMESRC= Event.cpp \
+GAMESRC = Bullet.cpp \
+	Explosion.cpp \
+	HealthPickup.cpp \
+	Hero.cpp \
+	MaxHealthPickup.cpp \
+	MazePiece.cpp \
+	RapidFire.cpp
+ENGINESRC= Event.cpp \
 	LogManager.cpp \
 	Clock.cpp \
 	GameManager.cpp \
@@ -34,19 +41,18 @@ GAMESRC= Event.cpp \
 	EventKeyboard.cpp \
 	EventMouse.cpp \
 	EventCollision.cpp \
-	IGetDeleted.cpp \
-	EndOfWorlds.cpp \
 	Sprite.cpp \
 	Frame.cpp \
 	ResourceManager.cpp \
-	EventOut.cpp
+	EventOut.cpp \
+	Box.cpp
 GAME= game.cpp
 EXECUTABLE= game		
-OBJECTS= $(GAMESRC:.cpp=.o)
+OBJECTS= $(GAMESRC:.cpp=.o) $(ENGINESRC:.cpp=.o)
 
 all: $(EXECUTABLE) Makefile
 
-$(EXECUTABLE): $(ENG) $(OBJECTS) $(GAME) $(GAMESRC)
+$(EXECUTABLE): $(ENG) $(OBJECTS) $(GAME) $(ENGINESRC) $(GAMESRC)
 	$(CC) $(GAME) $(OBJECTS) $(ENG) -o $@ -I$(INCPATH) $(LDFLAGS)
 
 .cpp.o: 
