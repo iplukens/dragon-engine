@@ -54,6 +54,8 @@ Bullet::Bullet(Position hero_pos, HeroDirection direction) {
 	// set starting location, based on the hero's position passed in
 	Position pos(hero_pos.getX() + pos_adjust_x, hero_pos.getY() + pos_adjust_y);
 	setPosition(pos);
+
+	registerInterest(COLLISION_EVENT);
 }
 
 int Bullet::eventHandler(Event *p_e) {
@@ -61,10 +63,25 @@ int Bullet::eventHandler(Event *p_e) {
 		out();
 		return 1;
 	}
+	if (p_e->getType() == COLLISION_EVENT){
+		EventCollision *p_c_e = static_cast<EventCollision *>(p_e);
+		hit(p_c_e);
+	}
 	return 0;
 }
 
 void Bullet::out() {
 	WorldManager &world_manager = WorldManager::getInstance();
 	world_manager.markForDelete(this);
+}
+
+void Bullet::hit(EventCollision *e) {
+	WorldManager &world_manager = WorldManager::getInstance();
+	if (e->getObject1()->getType() == "Maze"
+			|| e->getObject2()->getType() == "Maze") {
+		if (e->getObject1()->getType() == "Bullet")
+			world_manager.markForDelete(e->getObject1());
+		else
+			world_manager.markForDelete(e->getObject2());
+	}
 }

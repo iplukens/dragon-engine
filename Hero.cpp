@@ -115,6 +115,12 @@ void Hero::changeSprite(string type){
 	}
 }
 
+void Hero::sendMoveEvent(){
+	EventHeroMove move_event(getPosition());
+	WorldManager &wm = WorldManager::getInstance();
+	wm.onEvent(&move_event);
+}
+
 // move up or down
 void Hero::moveY(int dy) {
 	GraphicsManager &gm = GraphicsManager::getInstance();
@@ -124,6 +130,7 @@ void Hero::moveY(int dy) {
 	if ((new_pos.getY() > 3)
 			&& (new_pos.getY() < gm.getVertical()))
 		wm.moveObject(this, new_pos);
+	sendMoveEvent();
 }
 
 // move left or right
@@ -135,6 +142,7 @@ void Hero::moveX(int dx) {
 	if ((new_pos.getX() > 3)
 			&& (new_pos.getX() < gm.getHorizontal()))
 		wm.moveObject(this, new_pos);
+	sendMoveEvent();
 }
 
 // fire a bullet

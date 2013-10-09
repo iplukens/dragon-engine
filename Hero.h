@@ -36,6 +36,7 @@ protected:
 	void step();
 	void changeSprite(string type);
 	void hit(EventCollision *e);
+	void sendMoveEvent();
 
 public:
 	Hero();

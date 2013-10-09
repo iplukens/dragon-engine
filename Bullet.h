@@ -10,11 +10,13 @@
 
 #include "Object.h"
 #include "Hero.h"
+#include "EventCollision.h"
 
 class Bullet: public Object {
 
-protected:
+private:
 	void out();
+	void hit(EventCollision *e);
 
 public:
 	Bullet(Position hero_pos, HeroDirection direction);
