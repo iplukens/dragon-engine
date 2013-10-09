@@ -11,8 +11,9 @@
 #include "GraphicsManager.h"
 #include "EventCollision.h"
 #include "EventOut.h"
+#include "utility.h"
 
-bool boxIntersectsBox(Box box1, Box box2);
+//bool boxIntersectsBox(Box box1, Box box2);
 
 WorldManager &WorldManager::getInstance() {
 	static WorldManager instance; // Guaranteed to be destroyed.
@@ -81,11 +82,19 @@ int WorldManager::markForDelete(Object *o) {
 
 // placeholder draw function; draws all objects!
 void WorldManager::draw() {
-	ObjectListIterator li(&updates);
-	for (int alt = 0; alt < MAX_ALTITUDE + 1; alt++) {
-		for (li.first(); not li.isDone(); li.next()) {
-			if (li.currentObject()->getAltitude() == alt)
-				li.currentObject()->draw();
+	LogManager& log_manager = LogManager::getInstance();
+	log_manager.writeLog("WorldManager::draw() running...");
+
+	for(int i=0; i <= MAX_ALTITUDE; i++){
+		log_manager.writeLog("WorldManager::draw() doing altitude of <%d>", i);
+		ObjectListIterator it = updates.createIterator();
+
+		while(!it.isDone()){
+			if (it.currentObject() -> getAltitude() == i){
+				log_manager.writeLog("WorldManager::draw() asked Object of type <%s> to draw", it.currentObject()->getType().c_str());
+				it.currentObject() -> draw();
+			}
+			it.next();
 		}
 	}
 }
@@ -131,18 +140,6 @@ int WorldManager::moveObject(Object *p_o, Position where) {
 	return result;
 }
 
-bool boxIntersectsBox(Box box1, Box box2) {
-	bool x_overlap = (box1.getCorner().getX() <= box2.getCorner().getX()
-			<= box1.getCorner().getX() + box1.getHorizontal())
-			|| (box2.getCorner().getX() <= box1.getCorner().getX()
-					<= box2.getCorner().getX() + box2.getHorizontal());
-	bool y_overlap = (box1.getCorner().getY() <= box2.getCorner().getY()
-			<= box1.getCorner().getY() + box1.getVertical())
-			|| (box2.getCorner().getY() <= box1.getCorner().getY()
-					<= box2.getCorner().getY() + box2.getVertical());
-	return x_overlap && y_overlap;
-}
-
 // Return list of Objects collided with at Position `where'.
 // Collisions only with solid Objects.
 // Does not consider if p_o is solid or not.
@@ -175,3 +172,20 @@ ObjectList WorldManager::isCollision(Object *p_o, Position where) {
 bool WorldManager::isValid(string event_name) {
 	return true;
 }
+
+Box WorldManager::getBoundary(){
+	return boundary;
+}
+
+void WorldManager::setBoundary(Box new_boundary){
+	boundary = new_boundary;
+}
+
+Box WorldManager::getView(){
+	return view;
+}
+
+void WorldManager::setView(Box new_view){
+	view = new_view;
+}
+

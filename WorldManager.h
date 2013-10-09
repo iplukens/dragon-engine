@@ -18,6 +18,8 @@ class WorldManager : public Manager {
 private:
 	ObjectList updates;
 	ObjectList deletions;
+	Box boundary;                 // World boundary.
+	Box view;                     // Player view of world.
 	WorldManager();
 	WorldManager (WorldManager const&);    ///< Don't allow copy.
 	void operator=(WorldManager const&); ///< Don't allow assignment.
@@ -49,6 +51,18 @@ public:
 	int moveObject(Object *p_o, Position where);
 
 	bool isValid(string event_name);
+
+	// Get game world boundary.
+	Box getBoundary();
+
+	// Set game world boundary.
+	void setBoundary(Box new_boundary);
+
+	// Get player view of game world.
+	Box getView();
+
+	// Set player view of game world.
+	void setView(Box new_view);
 };
 
 #endif /* WORLDMANAGER_H_ */
