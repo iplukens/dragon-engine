@@ -18,6 +18,7 @@
 #include "RapidFire.h"
 #include "MaxHealthPickup.h"
 #include "HealthPickup.h"
+#include "EventHeroMove.h"
 
 //#include <iostream>
 
