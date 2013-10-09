@@ -24,7 +24,7 @@ private:
 	GraphicsManager(GraphicsManager const&);
 	void operator=(GraphicsManager const&);
 	WINDOW *buffer; // Drawing buffer.
-	bool isValid(string event_name);
+
 public:
 	// Get the one and only instance of the GraphicsManager.
 	static GraphicsManager &getInstance();
@@ -53,6 +53,8 @@ public:
 			int color = COLOR_DEFAULT);
 	// draws a frame of a sprite
 	int drawFrame(Position world_pos, Frame frame, bool centered, int color);
+
+//	bool isValid(string event_name);
 };
 
 #endif
