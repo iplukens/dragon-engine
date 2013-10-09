@@ -15,12 +15,15 @@ using std::string;
 
 class Manager {
 private:
-	bool is_started;
 	int event_count; // Number of events.
 	string event_name[MAX_EVENTS]; // List of events.
 	ObjectList obj_list[MAX_EVENTS]; // Objects interested in event
 	// check if an event is valid
 	virtual bool isValid(string event_name);
+
+protected:
+	bool is_started;
+
 public:
 	Manager();
 	virtual ~Manager();
