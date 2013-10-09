@@ -1,3 +1,7 @@
+## Mac Garbage files
+.DS_Store
+
+
 ## Binary files
 *.o
 *.exe

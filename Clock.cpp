@@ -40,7 +40,9 @@ long int Clock::split(){
 	long int result = new_millis - prev_ts;
 	return result;
 }
-#elif CYGWIN
+#endif
+
+#ifdef CYGWIN
 #include <time.h>
 
 #include "Clock.h"
