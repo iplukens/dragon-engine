@@ -1,8 +1,8 @@
 frames 1
-width 2
+width 3
 height 2
-color red
-++
-++
+color blue
+[-]
+ l 
 end
 eof

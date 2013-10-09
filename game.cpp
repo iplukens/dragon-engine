@@ -5,8 +5,8 @@
 #include "ResourceManager.h"
 
 // Game includes
-#include "IGetDeleted.h"
-#include "EndOfWorlds.h"
+
+void loadResources();
 
 int main(int argc, char *argv[]) {
 	LogManager &lm = LogManager::getInstance();
@@ -20,10 +20,25 @@ int main(int argc, char *argv[]) {
 		exit(1);
 	}
 
-	ResourceManager &rm = ResourceManager::getInstance();
+	loadResources();
 
 	game_manager.run();
 
 	// Shut everything down
 	game_manager.shutDown();
+}
+
+void loadResources(){
+		// load saucer sprite
+		ResourceManager &rm = ResourceManager::getInstance();
+		rm.loadSprite("sprites/heror-spr.txt", "hero_r");
+		rm.loadSprite("sprites/herod-spr.txt", "hero_d");
+		rm.loadSprite("sprites/herol-spr.txt", "hero_l");
+		rm.loadSprite("sprites/herou-spr.txt", "hero_u");
+
+		rm.loadSprite("sprites/bullet-spr.txt", "bullet");
+		rm.loadSprite("sprites/explosion-spr.txt", "explosion");
+		rm.loadSprite("sprites/rapid-spr.txt", "rapid");
+		rm.loadSprite("sprites/health-spr.txt", "health");
+		rm.loadSprite("sprites/max-spr.txt", "max");
 }

@@ -1,6 +1,7 @@
 frames 1
-width 3
+width 4
 height 1
-o=<
+color blue
+[-]-
 end
 eof
