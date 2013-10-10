@@ -27,7 +27,7 @@ RapidFire::RapidFire() {
 	time_to_spawn = 0;
 	SPAWN = 100;
 	spawned = false;
-	registerInterest(EVENT_STEP);
+	registerInterest(STEP_EVENT);
 }
 
 void RapidFire::hit(EventCollision *p_c) {

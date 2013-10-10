@@ -33,7 +33,7 @@ Hero::Hero() {
 
 	// player controls hero, so register with keyboard
 	registerInterest(KEYBOARD_EVENT);
-	registerInterest(EVENT_STEP);
+	registerInterest(STEP_EVENT);
 	setType("Hero");
 	GraphicsManager &gm = GraphicsManager::getInstance();
 	Position pos(7, gm.getVertical() / 2);
@@ -57,7 +57,7 @@ int Hero::eventHandler(Event *p_e) {
 		hit(p_collision_event);
 		return 1;
 	}
-	if (p_e->getType() == EVENT_STEP) {
+	if (p_e->getType() == STEP_EVENT) {
 		step();
 		return 1;
 	}
