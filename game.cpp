@@ -9,6 +9,11 @@
 #include "Hero.h"
 #include "MazePiece.h"
 #include "Monster.h"
+#include "Points.h"
+
+// different pickup items
+#include "HealthPickup.h"
+#include "RapidFire.h"
 
 void loadResources();
 
@@ -28,6 +33,7 @@ int main(int argc, char *argv[]) {
 
 	WorldManager &wm = WorldManager::getInstance();
 
+	new Points;
 	new Hero;
 	for (int i = 3; i < wm.getBoundary().getVertical(); i++){
 		new MazePiece (Position(0, i));
@@ -41,6 +47,9 @@ int main(int argc, char *argv[]) {
 	new Monster(Position(5, 5));
 	new Monster(Position(10, 5));
 	new Monster(Position(15, 10));
+
+	new HealthPickup(Position(20, 20));
+	new RapidFire(Position(21, 21));
 
 	game_manager.run();
 

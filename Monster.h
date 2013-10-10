@@ -20,6 +20,7 @@ private:
 	void hit (EventCollision* e);
 public:
 	Monster(Position pos);
+	~Monster();
 	int eventHandler(Event *p_e);
 };
 

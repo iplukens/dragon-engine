@@ -15,6 +15,8 @@
 #include "EventStep.h"
 #include "EventCollision.h"
 #include "Explosion.h"
+#include "EventView.h"
+#include "Points.h"
 
 #include <stdlib.h>
 
@@ -96,4 +98,11 @@ void Monster::hit(EventCollision* e) {
 		wm.markForDelete(e->getObject1());
 		wm.markForDelete(e->getObject2());
 	}
+}
+
+Monster::~Monster(){
+	WorldManager &wm = WorldManager::getInstance();
+	// send "view" event with points to interested ViewObjects
+	EventView ev(POINTS_STRING, 10, true);
+	wm.onEvent(&ev);
 }
