@@ -4,6 +4,7 @@
 #include "GameManager.h"
 #include "ResourceManager.h"
 #include "WorldManager.h"
+#include "GraphicsManager.h"
 
 // Game includes
 #include "Hero.h"
@@ -33,15 +34,21 @@ int main(int argc, char *argv[]) {
 
 	WorldManager &wm = WorldManager::getInstance();
 
+	ViewObject *h_vo = new ViewObject; // used for health count
+	h_vo->setLocation(TOP_LEFT);
+	h_vo->setViewString("Health");
+	h_vo->setValue(1);
+	h_vo->setColor(COLOR_RED);
+
 	new Points;
 	new Hero;
-	for (int i = 3; i < wm.getBoundary().getVertical(); i++){
-		new MazePiece (Position(0, i));
-		new MazePiece (Position(wm.getBoundary().getHorizontal() - 1, i));
+	for (int i = 3; i < wm.getBoundary().getVertical(); i++) {
+		new MazePiece(Position(0, i));
+		new MazePiece(Position(wm.getBoundary().getHorizontal() - 1, i));
 	}
-	for (int i = 1; i < wm.getBoundary().getHorizontal(); i++){
-		new MazePiece (Position(i, 3));
-		new MazePiece (Position(i, wm.getBoundary().getVertical() - 1));
+	for (int i = 1; i < wm.getBoundary().getHorizontal(); i++) {
+		new MazePiece(Position(i, 3));
+		new MazePiece(Position(i, wm.getBoundary().getVertical() - 1));
 	}
 
 	new Monster(Position(5, 5));
@@ -57,19 +64,19 @@ int main(int argc, char *argv[]) {
 	game_manager.shutDown();
 }
 
-void loadResources(){
-		// load saucer sprite
-		ResourceManager &rm = ResourceManager::getInstance();
-		rm.loadSprite("sprites/heror-spr.txt", "hero_r");
-		rm.loadSprite("sprites/herod-spr.txt", "hero_d");
-		rm.loadSprite("sprites/herol-spr.txt", "hero_l");
-		rm.loadSprite("sprites/herou-spr.txt", "hero_u");
+void loadResources() {
+	// load saucer sprite
+	ResourceManager &rm = ResourceManager::getInstance();
+	rm.loadSprite("sprites/heror-spr.txt", "hero_r");
+	rm.loadSprite("sprites/herod-spr.txt", "hero_d");
+	rm.loadSprite("sprites/herol-spr.txt", "hero_l");
+	rm.loadSprite("sprites/herou-spr.txt", "hero_u");
 
-		rm.loadSprite("sprites/monster1-spr.txt", "monster1");
+	rm.loadSprite("sprites/monster1-spr.txt", "monster1");
 
-		rm.loadSprite("sprites/bullet-spr.txt", "bullet");
-		rm.loadSprite("sprites/explosion-spr.txt", "explosion");
-		rm.loadSprite("sprites/rapid-spr.txt", "rapid");
-		rm.loadSprite("sprites/health-spr.txt", "health");
-		rm.loadSprite("sprites/max-spr.txt", "max");
+	rm.loadSprite("sprites/bullet-spr.txt", "bullet");
+	rm.loadSprite("sprites/explosion-spr.txt", "explosion");
+	rm.loadSprite("sprites/rapid-spr.txt", "rapid");
+	rm.loadSprite("sprites/health-spr.txt", "health");
+	rm.loadSprite("sprites/max-spr.txt", "max");
 }

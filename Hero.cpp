@@ -19,6 +19,7 @@
 #include "MaxHealthPickup.h"
 #include "HealthPickup.h"
 #include "EventHeroMove.h"
+#include "EventView.h"
 
 //#include <iostream>
 
@@ -39,7 +40,7 @@ Hero::Hero() {
 	Position pos(7, gm.getVertical() / 2);
 	setPosition(pos);
 
-	current_health = 2;
+	current_health = 1;
 	max_health = 2;
 	fire_slowdown = 15;
 	fire_countdown = fire_slowdown;
@@ -193,8 +194,8 @@ void Hero::hit(EventCollision *e) {
 			|| e->getObject2()->getType() == "health") {
 		if (max_health > current_health) {
 			current_health++;
-			//EventView ev("Health", 1, true);
-			//world_manager.onEvent(&ev);
+			EventView ev("Health", 1, true);
+			world_manager.onEvent(&ev);
 		}
 		if (e->getObject1()->getType() == "health")
 			world_manager.markForDelete(e->getObject1());
