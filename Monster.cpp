@@ -16,6 +16,8 @@
 #include "EventCollision.h"
 #include "Explosion.h"
 
+#include <stdlib.h>
+
 Monster::Monster(Position pos) {
 	WorldManager &world_manager = WorldManager::getInstance();
 	Position h_pos(7, world_manager.getBoundary().getVertical() / 2);
@@ -30,7 +32,8 @@ Monster::Monster(Position pos) {
 
 	p_temp_sprite = rm.getSprite("monster1");
 	if (!p_temp_sprite) {
-		lm.writeLog("Monster::Monster(): Warning! Sprite '%s' not found", "monster1");
+		lm.writeLog("Monster::Monster(): Warning! Sprite '%s' not found",
+				"monster1");
 	} else {
 		setSprite(p_temp_sprite);
 		setSpriteSlowdown(3);		// third speed animation
@@ -57,7 +60,7 @@ int Monster::eventHandler(Event *p_e) {
 		}
 		return 1;
 	}
-	if (p_e->getType() == COLLISION_EVENT){
+	if (p_e->getType() == COLLISION_EVENT) {
 		EventCollision *p_c_e = static_cast<EventCollision *>(p_e);
 		hit(p_c_e);
 	}
@@ -68,10 +71,13 @@ void Monster::move_to_hero() {
 	WorldManager &wm = WorldManager::getInstance();
 	Position pos = getPosition();
 	Position new_pos(getPosition().getX(), getPosition().getY());
-	if (pos.getX() > hero_pos.getX()) {
-		new_pos.setX(getPosition().getX() - 1);
-	} else if (pos.getX() < hero_pos.getX()) {
-		new_pos.setX(getPosition().getX() + 1);
+
+	if (abs(pos.getX() - hero_pos.getX()) > abs(pos.getY() - hero_pos.getY())) {
+		if (pos.getX() > hero_pos.getX()) {
+			new_pos.setX(getPosition().getX() - 1);
+		} else if (pos.getX() < hero_pos.getX()) {
+			new_pos.setX(getPosition().getX() + 1);
+		}
 	} else if (pos.getY() > hero_pos.getY()) {
 		new_pos.setY(getPosition().getY() - 1);
 	} else {
@@ -80,14 +86,14 @@ void Monster::move_to_hero() {
 	wm.moveObject(this, new_pos);
 }
 
-void Monster::hit(EventCollision* e){
+void Monster::hit(EventCollision* e) {
 	WorldManager &wm = WorldManager::getInstance();
 
 	if (e->getObject1()->getType() == "Bullet"
-				|| e->getObject2()->getType() == "Bullet") {
-				Explosion *p_explosion = new Explosion;
-				p_explosion->setPosition(this->getPosition());
-				wm.markForDelete(e->getObject1());
-				wm.markForDelete(e->getObject2());
-		}
+			|| e->getObject2()->getType() == "Bullet") {
+		Explosion *p_explosion = new Explosion;
+		p_explosion->setPosition(this->getPosition());
+		wm.markForDelete(e->getObject1());
+		wm.markForDelete(e->getObject2());
+	}
 }

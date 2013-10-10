@@ -24,9 +24,6 @@ HealthPickup::HealthPickup() {
 	}
 	// set object type
 	setType("health");
-	time_to_spawn = 0;
-	SPAWN = 300;
-	spawned = false;
 	registerInterest(STEP_EVENT);
 }
 

@@ -6,7 +6,7 @@
 #include "WorldManager.h"
 #include "GraphicsManager.h"
 
-#define MAZE_CHAR 178
+#define MAZE_CHAR 'H'
 
 MazePiece::MazePiece(Position pos) {
 	setType("Maze");

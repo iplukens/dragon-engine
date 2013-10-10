@@ -24,9 +24,6 @@ RapidFire::RapidFire() {
 	}
 	// set object type
 	setType("rapid");
-	time_to_spawn = 0;
-	SPAWN = 100;
-	spawned = false;
 	registerInterest(COLLISION_EVENT);
 	registerInterest(STEP_EVENT);
 }
@@ -36,9 +33,9 @@ void RapidFire::hit(EventCollision *p_c) {
 			|| (p_c->getObject2()->getType() == "Bullet")) {
 		// make sure extra rapid fires stay around
 		WorldManager &world_manager = WorldManager::getInstance();
-		world_manager.markForDelete(p_c->getObject1());
-		world_manager.markForDelete(p_c->getObject2());
-
-		new RapidFire;
+		if((p_c->getObject1()->getType() == "Bullet"))
+			world_manager.markForDelete(p_c->getObject1());
+		else
+			world_manager.markForDelete(p_c->getObject2());
 	}
 }

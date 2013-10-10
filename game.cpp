@@ -3,9 +3,12 @@
 #include "LogManager.h"
 #include "GameManager.h"
 #include "ResourceManager.h"
+#include "WorldManager.h"
 
 // Game includes
 #include "Hero.h"
+#include "MazePiece.h"
+#include "Monster.h"
 
 void loadResources();
 
@@ -23,7 +26,21 @@ int main(int argc, char *argv[]) {
 
 	loadResources();
 
+	WorldManager &wm = WorldManager::getInstance();
+
 	Hero hero;
+	for (int i = 0; i < wm.getBoundary().getVertical(); i++){
+		new MazePiece (Position(0, i));
+		new MazePiece (Position(wm.getBoundary().getHorizontal() - 1, i));
+	}
+	for (int i = 1; i < wm.getBoundary().getHorizontal(); i++){
+		new MazePiece (Position(i, 0));
+		new MazePiece (Position(i, wm.getBoundary().getVertical() - 1));
+	}
+
+	new Monster(Position(5, 5));
+	new Monster(Position(10, 5));
+	new Monster(Position(15, 10));
 
 	game_manager.run();
 

@@ -17,10 +17,6 @@
 // standard header for Object that the hero can pick up
 class Pickup: public Object {
 protected:
-	bool spawned;
-	int SPAWN;
-	int time_to_spawn;
-
 	virtual void hit(EventCollision *p_c){};
 public:
 	virtual int eventHandler(Event *p_e) {

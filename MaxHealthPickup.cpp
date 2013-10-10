@@ -25,9 +25,6 @@ MaxHealthPickup::MaxHealthPickup() {
 	}
 	// set object type
 	setType("max");
-	time_to_spawn = 0;
-	SPAWN = 400;
-	spawned = false;
 	registerInterest(STEP_EVENT);
 }
 
