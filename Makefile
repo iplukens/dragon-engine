@@ -17,7 +17,8 @@ PLATFORM= -DMACOS  		# uncomment for macos
 #LDFLAGS= -lncurses -lrt	# uncomment linux/cygwin
 LDFLAGS= -lncurses 		# uncomment for macos
 INCPATH= include		# path to engine includes
-#ENG= lib/libdragonfly.a		# dragonfly engine
+ENG= lib/libdragonfly-macos64.a		# dragonfly engine for mac os x
+#ENG= lib/libdragonfly-cygwin64.a # dragonfly engine for cygwin
 GAMESRC = Bullet.cpp \
 	Explosion.cpp \
 	HealthPickup.cpp \
@@ -26,30 +27,30 @@ GAMESRC = Bullet.cpp \
 	MazePiece.cpp \
 	RapidFire.cpp \
 	EventHeroMove.cpp
-ENGINESRC= Event.cpp \
-	LogManager.cpp \
-	Clock.cpp \
-	GameManager.cpp \
-	Object.cpp \
-	ObjectList.cpp \
-	ObjectListIterator.cpp \
-	Position.cpp \
-	WorldManager.cpp \
-	EventStep.cpp \
-	Manager.cpp \
-	GraphicsManager.cpp \
-	InputManager.cpp \
-	EventKeyboard.cpp \
-	EventMouse.cpp \
-	EventCollision.cpp \
-	Sprite.cpp \
-	Frame.cpp \
-	ResourceManager.cpp \
-	EventOut.cpp \
-	Box.cpp \
-	ViewObject.cpp \
-	EventView.cpp \
-	utility.cpp
+# ENGINESRC= Event.cpp \
+	# LogManager.cpp \
+	# Clock.cpp \
+	# GameManager.cpp \
+	# Object.cpp \
+	# ObjectList.cpp \
+	# ObjectListIterator.cpp \
+	# Position.cpp \
+	# WorldManager.cpp \
+	# EventStep.cpp \
+	# Manager.cpp \
+	# GraphicsManager.cpp \
+	# InputManager.cpp \
+	# EventKeyboard.cpp \
+	# EventMouse.cpp \
+	# EventCollision.cpp \
+	# Sprite.cpp \
+	# Frame.cpp \
+	# ResourceManager.cpp \
+	# EventOut.cpp \
+	# Box.cpp \
+	# ViewObject.cpp \
+	# EventView.cpp \
+	# utility.cpp
 
 GAME= game.cpp
 EXECUTABLE= game		
