@@ -28,7 +28,7 @@ int main(int argc, char *argv[]) {
 
 	WorldManager &wm = WorldManager::getInstance();
 
-	Hero hero;
+	new Hero;
 	for (int i = 0; i < wm.getBoundary().getVertical(); i++){
 		new MazePiece (Position(0, i));
 		new MazePiece (Position(wm.getBoundary().getHorizontal() - 1, i));
