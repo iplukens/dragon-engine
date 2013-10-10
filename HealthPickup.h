@@ -15,7 +15,7 @@ class HealthPickup : public Pickup {
 private:
 	void hit(EventCollision *p_c);
 public:
-	HealthPickup();
+	HealthPickup(Position pos);
 };
 
 #endif /* HEALTHPICKUP_H_ */

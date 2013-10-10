@@ -15,7 +15,7 @@ class MaxHealthPickup: public Pickup {
 private:
 	void hit(EventCollision *e);
 public:
-	MaxHealthPickup();
+	MaxHealthPickup(Position pos);
 };
 
 #endif /* MAXHEALTHPICKUP_H_ */

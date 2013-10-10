@@ -9,11 +9,10 @@
 #include "LogManager.h"
 #include "ResourceManager.h"
 
-RapidFire::RapidFire() {
+RapidFire::RapidFire(Position pos) {
 	LogManager &log_manager = LogManager::getInstance();
 	ResourceManager &resource_manager = ResourceManager::getInstance();
 	WorldManager &world_manager = WorldManager::getInstance();
-	// setup "bullet" sprite
 	Sprite *p_temp_sprite = resource_manager.getSprite("rapid");
 	if (!p_temp_sprite) {
 		log_manager.writeLog("Rapid::Rapid(): Warning! Sprite '%s' not found",
@@ -25,7 +24,7 @@ RapidFire::RapidFire() {
 	// set object type
 	setType("rapid");
 	registerInterest(COLLISION_EVENT);
-	registerInterest(STEP_EVENT);
+	setPosition(pos);
 }
 
 void RapidFire::hit(EventCollision *p_c) {

@@ -15,7 +15,7 @@ class RapidFire: public Pickup {
 private:
 	void hit(EventCollision *p_c);
 public:
-	RapidFire();
+	RapidFire(Position pos);
 };
 
 #endif /* RAPIDFIRE_H_ */
