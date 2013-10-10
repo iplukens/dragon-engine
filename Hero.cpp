@@ -181,7 +181,7 @@ Hero::~Hero() {
 void Hero::hit(EventCollision *e) {
 	WorldManager &world_manager = WorldManager::getInstance();
 	if (e->getObject1()->getType() == "rapid"
-			|| e->getObject1()->getType() == "rapid") {
+			|| e->getObject2()->getType() == "rapid") {
 		if (fire_slowdown > 4)
 			fire_slowdown -= 4;
 		if (e->getObject1()->getType() == "rapid")
@@ -190,7 +190,7 @@ void Hero::hit(EventCollision *e) {
 			world_manager.markForDelete(e->getObject2());
 	}
 	if (e->getObject1()->getType() == "health"
-			|| e->getObject1()->getType() == "health") {
+			|| e->getObject2()->getType() == "health") {
 		if (max_health > current_health) {
 			current_health++;
 			//EventView ev("Health", 1, true);
@@ -202,7 +202,7 @@ void Hero::hit(EventCollision *e) {
 			world_manager.markForDelete(e->getObject2());
 	}
 	if (e->getObject1()->getType() == "max"
-			|| e->getObject1()->getType() == "max") {
+			|| e->getObject2()->getType() == "max") {
 		max_health++;
 		if (e->getObject1()->getType() == "max")
 			world_manager.markForDelete(e->getObject1());
