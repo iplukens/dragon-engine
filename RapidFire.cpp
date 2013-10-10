@@ -28,6 +28,7 @@ RapidFire::RapidFire() {
 	SPAWN = 100;
 	spawned = false;
 	registerInterest(COLLISION_EVENT);
+	registerInterest(STEP_EVENT);
 }
 
 void RapidFire::hit(EventCollision *p_c) {

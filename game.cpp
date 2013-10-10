@@ -5,6 +5,7 @@
 #include "ResourceManager.h"
 
 // Game includes
+#include "Hero.h"
 
 void loadResources();
 
@@ -21,6 +22,8 @@ int main(int argc, char *argv[]) {
 	}
 
 	loadResources();
+
+	Hero hero;
 
 	game_manager.run();
 
