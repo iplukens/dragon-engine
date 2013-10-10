@@ -36,6 +36,8 @@ void loadResources(){
 		rm.loadSprite("sprites/herol-spr.txt", "hero_l");
 		rm.loadSprite("sprites/herou-spr.txt", "hero_u");
 
+		rm.loadSprite("sprites/monster1-spr.txt", "monster1");
+
 		rm.loadSprite("sprites/bullet-spr.txt", "bullet");
 		rm.loadSprite("sprites/explosion-spr.txt", "explosion");
 		rm.loadSprite("sprites/rapid-spr.txt", "rapid");

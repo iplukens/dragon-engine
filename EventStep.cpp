@@ -8,7 +8,7 @@
 #include "EventStep.h"
 
 EventStep::EventStep() {
-	setType(EVENT_STEP);
+	setType(STEP_EVENT);
 }
 
 EventStep::~EventStep() {

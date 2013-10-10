@@ -27,7 +27,7 @@ HealthPickup::HealthPickup() {
 	time_to_spawn = 0;
 	SPAWN = 300;
 	spawned = false;
-	registerInterest(EVENT_STEP);
+	registerInterest(STEP_EVENT);
 }
 
 void HealthPickup::hit(EventCollision *p_c) {

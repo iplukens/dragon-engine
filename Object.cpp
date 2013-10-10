@@ -79,7 +79,7 @@ int Object::registerInterest(string event_name) {
 	if (event_count >= MAX_OBJ_EVENTS) {
 		// too many events!
 		return -1;
-	} else if (event_name == EVENT_STEP) {
+	} else if (event_name == STEP_EVENT) {
 		GameManager &gm = GameManager::getInstance();
 		result = gm.registerInterest(this, event_name);
 	} else if (event_name == MOUSE_EVENT || event_name == KEYBOARD_EVENT) {
@@ -99,7 +99,7 @@ int Object::registerInterest(string event_name) {
 // unregisters interest in events; return 0 if good; -1 if not
 int Object::unregisterInterest(string event_name) {
 	int result = -1;
-	if (event_name == EVENT_STEP) {
+	if (event_name == STEP_EVENT) {
 		GameManager &gm = GameManager::getInstance();
 		result = gm.unregisterInterest(this, event_name);
 	} else if (event_name == MOUSE_EVENT || event_name == KEYBOARD_EVENT) {

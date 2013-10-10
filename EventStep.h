@@ -8,7 +8,7 @@
 #ifndef __EVENTSTEP_H_
 #define __EVENTSTEP_H_
 
-#define EVENT_STEP "__step__"
+#define STEP_EVENT "__step__"
 
 #include "Event.h"
 

@@ -13,7 +13,7 @@
 #include "WorldManager.h"
 
 Explosion::Explosion() {
-  registerInterest(EVENT_STEP);
+  registerInterest(STEP_EVENT);
 
   // link to "explosion" sprite
   ResourceManager &rm = ResourceManager::getInstance();
@@ -36,7 +36,7 @@ Explosion::Explosion() {
 // return 0 if ignored, else 1
 int Explosion::eventHandler(Event *e) {
 
-  if (e->getType() == EVENT_STEP) {
+  if (e->getType() == STEP_EVENT) {
     step();
     return 1;
   }

@@ -38,7 +38,7 @@ EndOfWorlds::EndOfWorlds(int in_life, int x, int y) {
 	}
 	setPosition(p);
 	lm.writeLog("EndOfWorlds set at position %d, %d", this->getPosition().getX(), this->getPosition().getY());
-	registerInterest(EVENT_STEP);
+	registerInterest(STEP_EVENT);
 	registerInterest(KEYBOARD_EVENT);
 	registerInterest(OUT_EVENT);
 	registerInterest(COLLISION_EVENT);

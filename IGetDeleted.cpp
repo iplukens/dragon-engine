@@ -26,7 +26,7 @@ IGetDeleted::IGetDeleted(int in_life) {
 	setSolidness(SPECTRAL);
 	setXVelocity(-1);
 	setAltitude(0);		// make them in the background
-	registerInterest(EVENT_STEP);
+	registerInterest(STEP_EVENT);
 	registerInterest(OUT_EVENT);
 }
 

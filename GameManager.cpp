@@ -129,7 +129,7 @@ GameManager &GameManager::getInstance() {
 
 bool GameManager::isValid(string event_name) {
 	bool result = false;
-	if (event_name == EVENT_STEP) {
+	if (event_name == STEP_EVENT) {
 		result = true;
 	}
 	return result;

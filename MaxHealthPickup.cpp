@@ -28,7 +28,7 @@ MaxHealthPickup::MaxHealthPickup() {
 	time_to_spawn = 0;
 	SPAWN = 400;
 	spawned = false;
-	registerInterest(EVENT_STEP);
+	registerInterest(STEP_EVENT);
 }
 
 void MaxHealthPickup::hit(EventCollision *p_c) {
