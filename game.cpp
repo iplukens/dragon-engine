@@ -79,4 +79,5 @@ void loadResources() {
 	rm.loadSprite("sprites/rapid-spr.txt", "rapid");
 	rm.loadSprite("sprites/health-spr.txt", "health");
 	rm.loadSprite("sprites/max-spr.txt", "max");
+	rm.loadSprite("sprites/gamestart-spr.txt", "game_start");
 }
