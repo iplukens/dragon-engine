@@ -5,6 +5,8 @@
  *      Author: ian
  */
 
+#include <stdlib.h>
+
 #include "GameManager.h"
 #include "LogManager.h"
 #include "ResourceManager.h"
