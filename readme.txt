@@ -22,7 +22,7 @@ EventHeroMove.cpp/.h is an event that is sent when the player or 'Hero' moves.
 GameStart.cpp/.h handles the splash screen and main initialization of the game.
 HealthPickup.cpp/.h is a representation of a pickup that restores the player's health.
 Hero.cpp/.h is a representation of the player or 'Hero'
-MaxHealthPickup.cpp/.h is a representation of a powerup that increases the player's max health.
+MaxHealthPickup.cpp/.h is a representation of a powerup that increases the player's max health. Currently not in the game.
 MazePiece.cpp/.h is a representation of the walls in the play area
 Monster.cpp/.h is the enemy that attempts path finding to the player
 Pickup.h is a parent class that all other pickups inherit from
