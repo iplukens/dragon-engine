@@ -214,8 +214,8 @@ void Hero::hit(EventCollision *e) {
 	if (((e->getObject1()->getType()) == "Monster1")
 			|| ((e->getObject2()->getType()) == "Monster1")) {
 		current_health--;
-//		EventView ev("Health", -1, true);
-//		world_manager.onEvent(&ev);
+		EventView ev("Health", -1, true);
+		world_manager.onEvent(&ev);
 		if (current_health == 0) {
 			world_manager.markForDelete(e->getObject1());
 			world_manager.markForDelete(e->getObject2());

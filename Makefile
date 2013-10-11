@@ -28,7 +28,8 @@ GAMESRC = Bullet.cpp \
 	RapidFire.cpp \
 	EventHeroMove.cpp \
 	Monster.cpp \
-	Points.cpp
+	Points.cpp \
+	GameStart.cpp
 # ENGINESRC= Event.cpp \
 	# LogManager.cpp \
 	# Clock.cpp \
