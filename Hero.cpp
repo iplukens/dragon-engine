@@ -118,9 +118,9 @@ void Hero::changeSprite(string type){
 }
 
 void Hero::sendMoveEvent(){
-	EventHeroMove move_event(getPosition());
+	EventHeroMove *move_event = new EventHeroMove(getPosition());
 	WorldManager &wm = WorldManager::getInstance();
-	wm.onEvent(&move_event);
+	wm.onEvent(move_event);
 }
 
 // move up or down
