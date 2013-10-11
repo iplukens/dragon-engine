@@ -20,6 +20,10 @@
 
 #include <stdlib.h>
 
+//Random number between 0 to 2, -1 to make it -1 to 1
+//#define RANDOM_POSITIVE_OR_NEGATIVE_INT ((random() % 5) - 2)
+#define COLLISION_COUNT_MAX 4
+
 Monster::Monster(Position pos) {
 	WorldManager &world_manager = WorldManager::getInstance();
 	Position h_pos(7, world_manager.getBoundary().getVertical() / 2);
@@ -43,6 +47,10 @@ Monster::Monster(Position pos) {
 
 	speed_cooldown = 10;
 
+	haveCollidedWithMaze = false;
+	collisionWanderCount = 0;
+	negativeCollisionDirection = false;
+
 	registerInterest(HERO_MOVE_EVENT);
 	registerInterest(STEP_EVENT);
 	registerInterest(COLLISION_EVENT);
@@ -64,7 +72,7 @@ int Monster::eventHandler(Event *p_e) {
 	}
 	if (p_e->getType() == COLLISION_EVENT) {
 		EventCollision *p_c_e = static_cast<EventCollision *>(p_e);
-		hit(p_c_e);
+		handleCollision(p_c_e);
 	}
 	return 0;
 }
@@ -74,29 +82,63 @@ void Monster::move_to_hero() {
 	Position pos = getPosition();
 	Position new_pos(getPosition().getX(), getPosition().getY());
 
-	if (abs(pos.getX() - hero_pos.getX()) > abs(pos.getY() - hero_pos.getY())) {
-		if (pos.getX() > hero_pos.getX()) {
-			new_pos.setX(getPosition().getX() - 1);
-		} else if (pos.getX() < hero_pos.getX()) {
-			new_pos.setX(getPosition().getX() + 1);
+	if (!haveCollidedWithMaze){
+		if (abs(pos.getX() - hero_pos.getX()) > abs(pos.getY() - hero_pos.getY())) {
+			if (pos.getX() > hero_pos.getX()) {
+				new_pos.setX(getPosition().getX() - 1);
+			} else if (pos.getX() < hero_pos.getX()) {
+				new_pos.setX(getPosition().getX() + 1);
+			}
+		} else if (pos.getY() > hero_pos.getY()) {
+			new_pos.setY(getPosition().getY() - 1);
+		} else {
+			new_pos.setY(getPosition().getY() + 1);
 		}
-	} else if (pos.getY() > hero_pos.getY()) {
-		new_pos.setY(getPosition().getY() - 1);
+		wm.moveObject(this, new_pos);
 	} else {
-		new_pos.setY(getPosition().getY() + 1);
+		if (abs(pos.getX() - hero_pos.getX()) > abs(pos.getY() - hero_pos.getY())) {
+			if (negativeCollisionDirection){
+				new_pos.setY(getPosition().getY() + 1);
+			} else {
+				new_pos.setY(getPosition().getY() - 1);
+			}
+		}else {
+			if (negativeCollisionDirection){
+				new_pos.setX(getPosition().getX() + 1);
+			} else {
+				new_pos.setX(getPosition().getX() - 1);
+			}
+		}
+		wm.moveObject(this, new_pos);
+
+		collisionWanderCount--;
+
+		if (collisionWanderCount == 0){
+			haveCollidedWithMaze = false;
+		}
 	}
-	wm.moveObject(this, new_pos);
 }
 
-void Monster::hit(EventCollision* e) {
-	WorldManager &wm = WorldManager::getInstance();
+void Monster::handleCollision(EventCollision* e) {
+	LogManager &log_manager = LogManager::getInstance();
+	WorldManager &world_manager = WorldManager::getInstance();
 
-	if (e->getObject1()->getType() == "Bullet"
-			|| e->getObject2()->getType() == "Bullet") {
+	string collision_obj1_type = e->getObject1()->getType();
+	string collision_obj2_type = e->getObject2()->getType();
+
+	if (collision_obj1_type == "Bullet"
+			|| collision_obj2_type == "Bullet") {
 		Explosion *p_explosion = new Explosion;
 		p_explosion->setPosition(this->getPosition());
-		wm.markForDelete(e->getObject1());
-		wm.markForDelete(e->getObject2());
+		world_manager.markForDelete(e->getObject1());
+		world_manager.markForDelete(e->getObject2());
+	} else {
+		//Go crazy, AHWAHWAHWAHWAHWAHWAH
+		haveCollidedWithMaze = true;
+		collisionWanderCount = COLLISION_COUNT_MAX;
+
+		//Random direction perpendicular to hero
+		negativeCollisionDirection = random() % 2;
 	}
 }
 

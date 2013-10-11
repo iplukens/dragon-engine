@@ -28,7 +28,7 @@
 #include "HealthPickup.h"
 #include "RapidFire.h"
 
-#define MAZE_WALL_COUNT 40
+#define MAZE_WALL_COUNT 30
 
 GameStart::GameStart() {
 	// link to "message" sprite
@@ -113,12 +113,8 @@ void GameStart::start() {
 	for (int i = 0; i < MAZE_WALL_COUNT; i++) {
 		new MazePiece(
 				Position(
-						random()
-								% (world_manager.getBoundary().getHorizontal()
-										- 3) + 1,
-						random()
-								% (world_manager.getBoundary().getVertical() - 4)
-								+ 3));
+						random() % (world_manager.getBoundary().getHorizontal() - 3) + 1,
+						random() % (world_manager.getBoundary().getVertical() - 4) + 3));
 	}
 
 	new Monster(Position(5, 5));
