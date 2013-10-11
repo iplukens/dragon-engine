@@ -1,11 +1,18 @@
-Ian Lukens
-iplukens
-game.txt Project 2b - imgd 3000
+Ian Lukens, Robert Smieja
+iplukens , rjsmieja
+game.txt Project 3 - imgd 3000
 
-All output can be seen in the log file
+The Misadventures of Michigan Frank
 
-The game loop runs until the 'x' button is pressed, at which point it stops.  The display attempts to draw but nothing happens.
+A log of events is kept track in dragonfly.log
 
-Basically, a bunch of IGetDeleted objects get created and start moving in the -1 x direction.  These objects are spectral and go forever until receiving an out event upon which they reset position. Upon receiving enough step events, these objects delete themselves.
+The game starts with a title screen, at which the user is give an overview of the controls.
+The controls are arrow keys for movement, space to shoot, p to play, and q to quit.
 
-The EndOfWorlds object takes in a velocity and tries to move in that direction.  I have it set up that there are two, so they collide and do not end up moving.  It also has a keyboard event response, and pressing x ends the game.
+The game consists of 3 statically placed monsters, that attempt basic pathfinding towards the hero.
+The map consists of randomly placed maze pieces, and a border surronding the map.
+There is a Max Health Pickup and a Rapid Fire pickup located at the lower left of the map.
+The player spawns at the middle left of the game play area.
+Killing an enemy awards the player 10 points.
+
+The game is over when the user quits.
