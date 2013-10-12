@@ -1,5 +1,7 @@
 //Lines with // are ignored
 //Blank lines are also ignored
+//Space is an empty space
+//Levels are automatically placed at the center of the screen
 //H is hero
 //# is a wall
 //M is a monster
