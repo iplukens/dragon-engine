@@ -37,7 +37,7 @@ class LevelManager : public Manager {
 
  public:
   /// Get the one and only instance of the ResourceManager.
-  static ResourceManager &getInstance();
+  static LevelManager &getInstance();
 
   /// Get manager ready for resources.
   int startUp();

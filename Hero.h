@@ -11,6 +11,7 @@
 #include "Object.h"
 #include "EventKeyboard.h"
 #include "EventCollision.h"
+#include "Position.h"
 
 using std::string;
 
@@ -40,6 +41,7 @@ protected:
 
 public:
 	Hero();
+	Hero(Position pos);
 	~Hero();
 	int eventHandler(Event *p_e);
 };

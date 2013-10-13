@@ -3,6 +3,9 @@
 #include <iostream>
 #include <fstream>
 
+//Engine includes
+#include "LogManager.h"
+
 //Game includes
 #include "LevelManager.h"
 #include "MazePiece.h"
@@ -14,14 +17,6 @@ using std::string;
 using std::map;
 using std::ifstream;
 
-//Helper functions
-//Remove '\r' from line (if there - typical of Windows)
-void discardCR(string &str){
-	if (str[str.size()-1] == '\r'){
-		str.erase(str.size()-1);
-	}
-}
-
 //Return true if string only contains spaces
 bool has_only_spaces(const string& str) {
 	return str.find_first_not_of (' ') == str.npos;
@@ -29,29 +24,6 @@ bool has_only_spaces(const string& str) {
 
 bool is_comment(const string& str) {
 	return str[0] == '/' && str[1] == '/';
-}
-
-//Read single line of form 'tag number', and skip or create pieces as needed
-void readLine(ifstream *p_file, int *p_line_number){
-	LogManager &log_manager = LogManager::getInstance();
-	string line;
-
-	getline(*p_file, line);
-	discardCR(line);
-
-	//Leave if blank line or is a comment
-	if (!(has_only_spaces(line) || is_comment(line))){
-
-		//Loop through each character
-		for(int i = 0; i < line.size(); i++){
-			//Position of the character/object
-			Position pos(i, *p_line_number+VIEW_OBJECT_OFFSET);
-
-			convertObject(line[i], pos);
-		}
-
-		(*p_line_number)++;
-	}
 }
 
 //Convert character and position to the correct class, and create it
@@ -79,8 +51,11 @@ void convertObject(char object, Position pos){
 		new HealthPickup(pos);
 		break;
 
-		//Ignore space and newlines
-	case '/n':
+		//Ignore space and newlines and null terminators
+	case '\n':
+		break;
+	case '\0':
+		break;
 	case ' ':
 		break;
 
@@ -91,18 +66,42 @@ void convertObject(char object, Position pos){
 	}
 }
 
+//Read single line of form 'tag number', and skip or create pieces as needed
+void readLine(ifstream *p_file, int *p_line_number){
+	LogManager &log_manager = LogManager::getInstance();
+	string line;
+
+	getline(*p_file, line);
+
+	//DiscardCR
+	if (line[line.size()-1] == '\r'){
+		line.erase(line.size()-1);
+	}
+
+	//Leave if blank line or is a comment
+	if (!(has_only_spaces(line) || is_comment(line))){
+
+		//Loop through each character
+		for(int i = 0; i < line.size(); i++){
+			//Position of the character/object
+			Position pos(i, (*p_line_number) + VIEW_OBJECT_OFFSET);
+
+			convertObject(line[i], pos);
+		}
+
+		(*p_line_number)++;
+	}
+}
 
 LevelManager::LevelManager(){
 	level_count = 0;
 }
 
 int LevelManager::startUp(){
-	is_started = true;
 	return 0;
 }
 
 void LevelManager::shutDown(){
-	is_started = false;
 }
 
 int LevelManager::prepareLevel(string filename, string label){
@@ -113,7 +112,7 @@ int LevelManager::prepareLevel(string filename, string label){
 	}
 
 	//Else save map
-	levels.insert(label, filename);
+	levels[label, filename];
 
 	return 0;
 }
@@ -144,7 +143,6 @@ bool LevelManager::loadLevel(string label){
 	ifstream levelFile(filename.c_str());
 	int lineNumber = 0;
 
-	//TODO
 	while (levelFile.is_open()){
 		readLine(&levelFile, &lineNumber);
 	}

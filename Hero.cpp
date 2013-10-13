@@ -20,13 +20,30 @@
 #include "HealthPickup.h"
 #include "EventHeroMove.h"
 #include "EventView.h"
-
-//#include <iostream>
+#include "Position.h"
 
 #define UP_KEY 259
 #define DOWN_KEY 258
 #define LEFT_KEY 260
 #define RIGHT_KEY 261
+
+Hero::Hero(Position pos){
+	LogManager &lm = LogManager::getInstance();
+	changeSprite("hero_r");
+
+	// player controls hero, so register with keyboard
+	registerInterest(KEYBOARD_EVENT);
+	registerInterest(STEP_EVENT);
+	setType("Hero");
+	GraphicsManager &gm = GraphicsManager::getInstance();
+	setPosition(pos);
+
+	current_health = 1;
+	max_health = 2;
+	fire_slowdown = 15;
+	fire_countdown = fire_slowdown;
+	direction = RIGHT;
+}
 
 Hero::Hero() {
 	LogManager &lm = LogManager::getInstance();
@@ -39,9 +56,6 @@ Hero::Hero() {
 	GraphicsManager &gm = GraphicsManager::getInstance();
 	Position pos(7, gm.getVertical() / 2);
 	setPosition(pos);
-
-	current_health = 1;
-	max_health = 2;
 	fire_slowdown = 15;
 	fire_countdown = fire_slowdown;
 	direction = RIGHT;
