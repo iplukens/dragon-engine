@@ -10,6 +10,7 @@
 #include "LevelManager.h"
 #include "MazePiece.h"
 #include "HealthPickup.h"
+#include "PointsPickup.h"
 #include "Hero.h"
 #include "Monster.h"
 
@@ -53,6 +54,11 @@ void convertObject(char object, Position pos){
 	case '+':
 		log_manager.writeLog("LevelManager::loadLevel() is creating a Health Pickup at Position <%d, %d>", pos.getX(), pos.getY());
 		new HealthPickup(pos);
+		break;
+
+	case '*':
+		log_manager.writeLog("LevelManager::loadLevel() is creating a Points Pickup at Position <%d, %d>", pos.getX(), pos.getY());
+		new PointsPickup(pos);
 		break;
 
 		//Ignore space and newlines and null terminators

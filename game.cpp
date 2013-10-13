@@ -50,9 +50,12 @@ void loadResources() {
 
 	resource_manager.loadSprite("sprites/bullet-spr.txt", "bullet");
 	resource_manager.loadSprite("sprites/explosion-spr.txt", "explosion");
+
 	resource_manager.loadSprite("sprites/rapid-spr.txt", "rapid");
 	resource_manager.loadSprite("sprites/health-spr.txt", "health");
 	resource_manager.loadSprite("sprites/max-spr.txt", "max");
+	resource_manager.loadSprite("sprites/points-spr.txt", "points_pickup");
+
 	resource_manager.loadSprite("sprites/gamestart-spr.txt", "game_start");
 	resource_manager.loadSprite("sprites/gameover-spr.txt", "gameover");
 

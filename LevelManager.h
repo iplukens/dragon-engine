@@ -1,5 +1,5 @@
 ///
-/// The resource manager
+/// The level manager
 ///
 
 #ifndef __LEVEL_MANAGER_H__
@@ -14,8 +14,8 @@
 //Offset to account for viewObjects
 #define VIEW_OBJECT_OFFSET 3
 
-// Delimiters used to parse Sprite files -
-// the ResourceManager "knows" file format.
+// Delimiters used to parse Level files -
+// the LevelManager "knows" file format.
 #define FRAMES_TOKEN "frames"
 #define HEIGHT_TOKEN "height"
 #define WIDTH_TOKEN "width"

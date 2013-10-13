@@ -18,9 +18,11 @@
 #include "RapidFire.h"
 #include "MaxHealthPickup.h"
 #include "HealthPickup.h"
+#include "PointsPickup.h"
 #include "EventHeroMove.h"
 #include "EventView.h"
 #include "Position.h"
+#include "Points.h"
 
 #define UP_KEY 259
 #define DOWN_KEY 258
@@ -203,8 +205,7 @@ void Hero::hit(EventCollision *e) {
 			world_manager.markForDelete(e->getObject1());
 		else
 			world_manager.markForDelete(e->getObject2());
-	}
-	if (e->getObject1()->getType() == "health"
+	} else if (e->getObject1()->getType() == "health"
 			|| e->getObject2()->getType() == "health") {
 		if (max_health > current_health) {
 			current_health++;
@@ -215,17 +216,16 @@ void Hero::hit(EventCollision *e) {
 			world_manager.markForDelete(e->getObject1());
 		else
 			world_manager.markForDelete(e->getObject2());
-	}
-	if (e->getObject1()->getType() == "max"
+	} else if (e->getObject1()->getType() == "max"
 			|| e->getObject2()->getType() == "max") {
 		max_health++;
 		if (e->getObject1()->getType() == "max")
 			world_manager.markForDelete(e->getObject1());
 		else
 			world_manager.markForDelete(e->getObject2());
-	}
-	// if saucer, mark both objects for destruction or lower health
-	if (((e->getObject1()->getType()) == "Monster1")
+
+		// if saucer, mark both objects for destruction or lower health
+	} else if (((e->getObject1()->getType()) == "Monster1")
 			|| ((e->getObject2()->getType()) == "Monster1")) {
 		current_health--;
 		EventView ev("Health", -1, true);
@@ -240,6 +240,19 @@ void Hero::hit(EventCollision *e) {
 			world_manager.markForDelete(e->getObject1());
 		} else {
 			p_explosion->setPosition(e->getObject2()->getPosition());
+			world_manager.markForDelete(e->getObject2());
+		}
+	} else if (((e->getObject1()->getType()) == "points_pickup")
+			|| ((e->getObject2()->getType()) == "points_pickup")){
+
+		//Add to points
+		EventView ev(POINTS_STRING, 30, true);
+		world_manager.onEvent(&ev);
+
+		//Delete pickup
+		if (e->getObject1()->getType() == "points_pickup") {
+			world_manager.markForDelete(e->getObject1());
+		} else {
 			world_manager.markForDelete(e->getObject2());
 		}
 	}
