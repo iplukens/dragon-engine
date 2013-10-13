@@ -1,0 +1,15 @@
+frames 2
+width 4
+height 4
+color cyan
+ -- 
+|OO|
+|  |
+'^^'
+end
+ -- 
+|**|
+|  |
+'^^'
+end
+eof
