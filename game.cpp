@@ -6,12 +6,14 @@
 #include "WorldManager.h"
 #include "GraphicsManager.h"
 
+#include "LevelManager.h"
 #include "GameStart.h"
 
 void loadResources();
 
 int main(int argc, char *argv[]) {
 	LogManager &log_manager = LogManager::getInstance();
+	LevelManager &level_manager = LevelManager::getInstance();
 
 	// Start up Game Manager
 
@@ -21,6 +23,8 @@ int main(int argc, char *argv[]) {
 		game_manager.shutDown();
 		exit(1);
 	}
+
+	level_manager.startUp();
 
 	loadResources();
 
@@ -34,19 +38,25 @@ int main(int argc, char *argv[]) {
 
 void loadResources() {
 	// load saucer sprite
-	ResourceManager &rm = ResourceManager::getInstance();
-	rm.loadSprite("sprites/heror-spr.txt", "hero_r");
-	rm.loadSprite("sprites/herod-spr.txt", "hero_d");
-	rm.loadSprite("sprites/herol-spr.txt", "hero_l");
-	rm.loadSprite("sprites/herou-spr.txt", "hero_u");
+	ResourceManager &resource_manager = ResourceManager::getInstance();
+	LevelManager &level_manager = LevelManager::getInstance();
 
-	rm.loadSprite("sprites/monster1-spr.txt", "monster1");
+	resource_manager.loadSprite("sprites/heror-spr.txt", "hero_r");
+	resource_manager.loadSprite("sprites/herod-spr.txt", "hero_d");
+	resource_manager.loadSprite("sprites/herol-spr.txt", "hero_l");
+	resource_manager.loadSprite("sprites/herou-spr.txt", "hero_u");
 
-	rm.loadSprite("sprites/bullet-spr.txt", "bullet");
-	rm.loadSprite("sprites/explosion-spr.txt", "explosion");
-	rm.loadSprite("sprites/rapid-spr.txt", "rapid");
-	rm.loadSprite("sprites/health-spr.txt", "health");
-	rm.loadSprite("sprites/max-spr.txt", "max");
-	rm.loadSprite("sprites/gamestart-spr.txt", "game_start");
-	rm.loadSprite("sprites/gameover-spr.txt", "gameover");
+	resource_manager.loadSprite("sprites/monster1-spr.txt", "monster1");
+
+	resource_manager.loadSprite("sprites/bullet-spr.txt", "bullet");
+	resource_manager.loadSprite("sprites/explosion-spr.txt", "explosion");
+	resource_manager.loadSprite("sprites/rapid-spr.txt", "rapid");
+	resource_manager.loadSprite("sprites/health-spr.txt", "health");
+	resource_manager.loadSprite("sprites/max-spr.txt", "max");
+	resource_manager.loadSprite("sprites/gamestart-spr.txt", "game_start");
+	resource_manager.loadSprite("sprites/gameover-spr.txt", "gameover");
+
+	level_manager.prepareLevel("levels/Level1.txt", "level_1");
+
+
 }

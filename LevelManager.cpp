@@ -33,21 +33,25 @@ void convertObject(char object, Position pos){
 	switch(object){
 	//Wall
 	case '#':
+		log_manager.writeLog("LevelManager::loadLevel() is creating a MazePiece at Position <%d, %d>", pos.getX(), pos.getY());
 		new MazePiece(pos);
 		break;
 
 		//Hero
 	case 'H':
+		log_manager.writeLog("LevelManager::loadLevel() is creating a Hero at Position <%d, %d>", pos.getX(), pos.getY());
 		new Hero(pos);
 		break;
 
 		//Monster
 	case 'M':
+		log_manager.writeLog("LevelManager::loadLevel() is creating a Monster at Position <%d, %d>", pos.getX(), pos.getY());
 		new Monster(pos);
 		break;
 
 		//Health Pickup
 	case '+':
+		log_manager.writeLog("LevelManager::loadLevel() is creating a Health Pickup at Position <%d, %d>", pos.getX(), pos.getY());
 		new HealthPickup(pos);
 		break;
 
@@ -97,6 +101,11 @@ LevelManager::LevelManager(){
 	level_count = 0;
 }
 
+LevelManager &LevelManager::getInstance(){
+	static LevelManager level_manager;
+	return level_manager;
+}
+
 int LevelManager::startUp(){
 	return 0;
 }
@@ -105,14 +114,17 @@ void LevelManager::shutDown(){
 }
 
 int LevelManager::prepareLevel(string filename, string label){
+	LogManager &log_manager = LogManager::getInstance();
 
 	//If already exists, return error
 	if (levels.count(label)){
+		log_manager.writeLog("LevelManager::prepareLevel() failed! A level with a label of <%s> already exists!", label.c_str());
 		return 1;
 	}
 
 	//Else save map
-	levels[label, filename];
+	log_manager.writeLog("LevelManager::prepareLevel() prepared the level stored in filename <%s> with a label of <%s>", filename.c_str(), label.c_str());
+	levels[label] = filename;
 
 	return 0;
 }
@@ -133,9 +145,9 @@ bool LevelManager::loadLevel(string label){
 	LogManager &log_manager = LogManager::getInstance();
 	log_manager.writeLog("LevelManager::loadLevel() attempting to load level with label <%s>", label.c_str());
 
-	if (!levels.count(label)){
+	if (levels.count(label) == 0){
 		//We don't have the level loaded
-		log_manager.writeLog("LevelManager::loadLevel() encountered an error! No level pre-loaded with label <%s>!", label.c_str());
+		log_manager.writeLog("LevelManager::loadLevel() encountered an error! No level prepared with label <%s>!", label.c_str());
 		return false;
 	}
 
@@ -143,14 +155,18 @@ bool LevelManager::loadLevel(string label){
 	ifstream levelFile(filename.c_str());
 	int lineNumber = 0;
 
-	while (levelFile.is_open()){
+	while (levelFile.is_open() && levelFile.good()){
 		readLine(&levelFile, &lineNumber);
 	}
 
+	levelFile.close();
+
 	if (lineNumber == 0){
 		//No lines read, level loading failed
+		log_manager.writeLog("LevelManager::loadLevel() failed to load a level! No lines read!");
 		return false;
 	}
 
+	log_manager.writeLog("LevelManager::loadLevel() loaded a level with a label of <%s> and with <%d> lines", label.c_str(), lineNumber);
 	return true;
 }
