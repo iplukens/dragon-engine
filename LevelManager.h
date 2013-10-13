@@ -11,8 +11,8 @@
 #include "Position.h"
 #include "Manager.h"
 
-// Maximum number of unique levels in game.
-#define MAX_LEVELS 10
+//Offset to account for viewObjects
+#define VIEW_OBJECT_OFFSET 3
 
 // Delimiters used to parse Sprite files -
 // the ResourceManager "knows" file format.

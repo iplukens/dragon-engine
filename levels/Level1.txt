@@ -1,4 +1,4 @@
-//Lines with // are ignored
+//Lines with // at the start are ignored
 //Blank lines are also ignored
 //Space is an empty space
 //Levels are automatically placed at the center of the screen
