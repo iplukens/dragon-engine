@@ -5,11 +5,12 @@
 //H is hero
 //# is a wall
 //M is a monster
+//G is a ghost
 //+ is a HealthPickup
 //* is a PointsPickup
 
 #########################################################
-#    #                                                  #
+#    #   G                                              #
 #  M #                                                  #
 #    ############    #####################    ######    #
 #    #                                             #    #

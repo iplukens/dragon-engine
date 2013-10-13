@@ -4,6 +4,6 @@ height 1
 color yellow
 <*>
 end
-<_>
+< >
 end
 eof

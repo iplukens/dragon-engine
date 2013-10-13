@@ -13,6 +13,7 @@
 #include "PointsPickup.h"
 #include "Hero.h"
 #include "Monster.h"
+#include "Ghost.h"
 
 using std::string;
 using std::map;
@@ -48,6 +49,12 @@ void convertObject(char object, Position pos){
 	case 'M':
 		log_manager.writeLog("LevelManager::loadLevel() is creating a Monster at Position <%d, %d>", pos.getX(), pos.getY());
 		new Monster(pos);
+		break;
+
+		//Ghost
+	case 'G':
+		log_manager.writeLog("LevelManager::loadLevel() is creating a Ghost at Position <%d, %d>", pos.getX(), pos.getY());
+		new Ghost(pos);
 		break;
 
 		//Health Pickup
