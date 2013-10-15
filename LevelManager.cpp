@@ -5,6 +5,7 @@
 
 //Engine includes
 #include "LogManager.h"
+#include "ViewObject.h"
 
 //Game includes
 #include "LevelManager.h"
@@ -14,6 +15,7 @@
 #include "Hero.h"
 #include "Monster.h"
 #include "Ghost.h"
+#include "Points.h"
 
 using std::string;
 using std::map;
@@ -130,41 +132,66 @@ int LevelManager::prepareLevel(string filename, string label){
 	LogManager &log_manager = LogManager::getInstance();
 
 	//If already exists, return error
-	if (levels.count(label)){
+	if (level_files.count(label)){
 		log_manager.writeLog("LevelManager::prepareLevel() failed! A level with a label of <%s> already exists!", label.c_str());
 		return 1;
 	}
 
 	//Else save map
 	log_manager.writeLog("LevelManager::prepareLevel() prepared the level stored in filename <%s> with a label of <%s>", filename.c_str(), label.c_str());
-	levels[label] = filename;
+	level_files[label] = filename;
+	levels[label] = ++level_count;
 
 	return 0;
 }
 
 int LevelManager::removePreparedLevel(string label){
 
-	int num_erased = levels.erase(label);
+	int num_erased = level_files.erase(label);
+	num_erased += levels.erase(label);
 
 	//If we didn't erase anything, return error
 	if (num_erased == 0){
 		return 1;
 	} else {
+		level_count--;
 		return 0;
 	}
 }
 
 bool LevelManager::loadLevel(string label){
 	LogManager &log_manager = LogManager::getInstance();
+	WorldManager &world_manager = WorldManager::getInstance();
+	SceneGraph scene_graph = world_manager.getSceneGraph();
+
 	log_manager.writeLog("LevelManager::loadLevel() attempting to load level with label <%s>", label.c_str());
 
-	if (levels.count(label) == 0){
+	//Safety check
+	if (level_files.count(label) == 0){
 		//We don't have the level loaded
 		log_manager.writeLog("LevelManager::loadLevel() encountered an error! No level prepared with label <%s>!", label.c_str());
 		return false;
 	}
 
-	string filename = levels[label];
+	//Delete everything except view objects
+	ObjectList all_obj = world_manager.getAllObjects();
+	ObjectListIterator it = all_obj.createIterator();
+
+	while(!it.isDone()){
+		//If not points or health, delete
+		if (!(it.currentObject()->getType() == POINTS_STRING || it.currentObject()->getType() == "Health")){
+			world_manager.markForDelete(it.currentObject());
+		}
+
+		it.next();
+	}
+
+	//Prepare World Manager and Scene Graph
+	scene_graph.setLevel(levels[label]);
+//	world_manager.setLevel(levels[label]);
+
+	//Actual load
+	string filename = level_files[label];
 	ifstream levelFile(filename.c_str());
 	int lineNumber = 0;
 
@@ -179,6 +206,8 @@ bool LevelManager::loadLevel(string label){
 		log_manager.writeLog("LevelManager::loadLevel() failed to load a level! No lines read!");
 		return false;
 	}
+
+	world_manager.setLevel(levels[label]);
 
 	log_manager.writeLog("LevelManager::loadLevel() loaded a level with a label of <%s> and with <%d> lines", label.c_str(), lineNumber);
 	return true;

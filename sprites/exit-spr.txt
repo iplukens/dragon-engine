@@ -1,9 +1,8 @@
 frames 1
 width 3
-height 4
+height 3
 color magenta
  -
 | |
- '
 end
 eof

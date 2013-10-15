@@ -32,7 +32,8 @@ class LevelManager : public Manager {
   LevelManager (LevelManager const&); ///< Don't allow copy.
   void operator=(LevelManager const&); ///< Don't allow assignment.
   LevelManager();                      ///< Private since a singleton.
-  map<string, string> levels;      ///< Array of filenames and levels
+  map<string, string> level_files;      ///< Array of filenames and levels
+  map<string, int> levels;				///< Array of filenames and level
   int level_count;                       ///< Count of number of loaded levels.
 
  public:

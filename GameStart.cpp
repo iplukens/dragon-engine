@@ -84,21 +84,21 @@ int GameStart::eventHandler(Event *p_e) {
 
 void GameStart::start() {
 	WorldManager &world_manager = WorldManager::getInstance();
-	SceneGraph &scene_graph = world_manager.getSceneGraph();
 	LevelManager &level_manager = LevelManager::getInstance();
 
-	// will populate play world with objects
-	scene_graph.setLevel(PLAY_LEVEL);
+	//Load level and set level
+	level_manager.loadLevel("level_1");
+
 	// create hero
 	ViewObject *h_vo = new ViewObject; // used for health count
 	h_vo->setLocation(TOP_LEFT);
 	h_vo->setViewString("Health");
+	h_vo->setType("Health");
 	h_vo->setValue(1);
 	h_vo->setColor(COLOR_RED);
 
 	new Points;
 
-	level_manager.loadLevel("level_1");
 //	new Hero;
 //
 //	//Outer maze walls
@@ -129,7 +129,7 @@ void GameStart::start() {
 //	new RapidFire(Position(21, 21));
 
 	// tell world manager to goto game level
-	world_manager.setLevel(PLAY_LEVEL);
+//	world_manager.setLevel(PLAY_LEVEL);
 }
 
 // override default draw so as not to display "value"

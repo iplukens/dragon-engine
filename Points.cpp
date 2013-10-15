@@ -12,6 +12,7 @@
 Points::Points() {
 	setLocation(TOP_RIGHT);
 	setViewString (POINTS_STRING);
+	setType(POINTS_STRING);
 	setColor (COLOR_YELLOW);
 	step_count = 0;
 }
