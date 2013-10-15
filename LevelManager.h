@@ -35,6 +35,7 @@ class LevelManager : public Manager {
   map<string, string> level_files;      ///< Array of filenames and levels
   map<string, int> levels;				///< Array of filenames and level
   int level_count;                       ///< Count of number of loaded levels.
+  ObjectList current_level_obj; 		///< Current objects in the level
 
  public:
   /// Get the one and only instance of the ResourceManager.

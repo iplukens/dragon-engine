@@ -60,6 +60,7 @@ GameStart::GameStart() {
 // handle event
 // return 0 if ignored, else 1
 int GameStart::eventHandler(Event *p_e) {
+	WorldManager &world_manager = WorldManager::getInstance();
 	GameManager &game_manager = GameManager::getInstance();
 
 	// keyboard
@@ -68,6 +69,7 @@ int GameStart::eventHandler(Event *p_e) {
 		switch (p_keyboard_event->getKey()) {
 		case 'p': 			// play
 			start();
+			world_manager.markForDelete(this);
 			break;
 		case 'q':			// quit
 			game_manager.setGameOver();
@@ -88,6 +90,7 @@ void GameStart::start() {
 
 	//Load level and set level
 	level_manager.loadLevel("level_1");
+//	level_manager.loadLevel("level_2");
 
 	ViewObject *h_vo = new ViewObject; // used for health count
 	h_vo->setLocation(TOP_LEFT);

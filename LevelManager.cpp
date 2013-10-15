@@ -33,43 +33,43 @@ bool is_comment(const string& str) {
 }
 
 //Convert character and position to the correct class, and create it
-void convertObject(char object, Position pos){
+void convertObject(char object, Position pos, ObjectList* list){
 	LogManager &log_manager = LogManager::getInstance();
 
 	switch(object){
 	//Wall
 	case '#':
 		log_manager.writeLog("LevelManager::loadLevel() is creating a MazePiece at Position <%d, %d>", pos.getX(), pos.getY());
-		new MazePiece(pos);
+		list->insert(new MazePiece(pos));
 		break;
 
 		//Hero
 	case 'H':
 		log_manager.writeLog("LevelManager::loadLevel() is creating a Hero at Position <%d, %d>", pos.getX(), pos.getY());
-		new Hero(pos);
+		list->insert(new Hero(pos));
 		break;
 
 		//Monster
 	case 'M':
 		log_manager.writeLog("LevelManager::loadLevel() is creating a Monster at Position <%d, %d>", pos.getX(), pos.getY());
-		new Monster(pos);
+		list->insert(new Monster(pos));
 		break;
 
 		//Ghost
 	case 'G':
 		log_manager.writeLog("LevelManager::loadLevel() is creating a Ghost at Position <%d, %d>", pos.getX(), pos.getY());
-		new Ghost(pos);
+		list->insert(new Ghost(pos));
 		break;
 
 		//Health Pickup
 	case '+':
 		log_manager.writeLog("LevelManager::loadLevel() is creating a Health Pickup at Position <%d, %d>", pos.getX(), pos.getY());
-		new HealthPickup(pos);
+		list->insert(new HealthPickup(pos));
 		break;
 
 	case '*':
 		log_manager.writeLog("LevelManager::loadLevel() is creating a Points Pickup at Position <%d, %d>", pos.getX(), pos.getY());
-		new PointsPickup(pos);
+		list->insert(new PointsPickup(pos));
 		break;
 
 	case 'O':
@@ -97,7 +97,7 @@ void convertObject(char object, Position pos){
 }
 
 //Read single line of form 'tag number', and skip or create pieces as needed
-void readLine(ifstream *p_file, int *p_line_number){
+void readLine(ifstream *p_file, int *p_line_number, ObjectList* list){
 	LogManager &log_manager = LogManager::getInstance();
 	string line;
 
@@ -116,7 +116,7 @@ void readLine(ifstream *p_file, int *p_line_number){
 			//Position of the character/object
 			Position pos(i, (*p_line_number) + VIEW_OBJECT_OFFSET);
 
-			convertObject(line[i], pos);
+			convertObject(line[i], pos, list);
 		}
 
 		(*p_line_number)++;
@@ -149,9 +149,10 @@ int LevelManager::prepareLevel(string filename, string label){
 	}
 
 	//Else save map
-	log_manager.writeLog("LevelManager::prepareLevel() prepared the level stored in filename <%s> with a label of <%s>", filename.c_str(), label.c_str());
+	level_count++;
+	log_manager.writeLog("LevelManager::prepareLevel() prepared the level stored in filename <%s> with a label of <%s> and an int of <%d>", filename.c_str(), label.c_str(), level_count);
 	level_files[label] = filename;
-	levels[label] = ++level_count;
+	levels[label] = level_count;
 
 	return 0;
 }
@@ -184,22 +185,36 @@ bool LevelManager::loadLevel(string label){
 		return false;
 	}
 
-	//Delete everything except view objects
-	ObjectList all_obj = world_manager.getAllObjects();
-	ObjectListIterator it = all_obj.createIterator();
+	//	//Delete gamestart
+	//	if (!world_manager.getAllObjects().isEmpty()){
+	//		ObjectListIterator world_it = world_manager.getAllObjects().createIterator();
+	//		while(!world_it.isDone()){
+	//			if (!(world_it.currentObject()->getType() == POINTS_STRING || world_it.currentObject()->getType() == "Health")){
+	//				world_manager.markForDelete(world_it.currentObject());
+	//			}
+	//
+	//			world_it.next();
+	//		}
+	//	}
 
-	while(!it.isDone()){
-		//If not points or health, delete
-		if (!(it.currentObject()->getType() == POINTS_STRING || it.currentObject()->getType() == "Health")){
+	//Old level
+	if (!current_level_obj.isEmpty()){
+		ObjectListIterator it = current_level_obj.createIterator();
+
+		while(!it.isDone()){
 			world_manager.markForDelete(it.currentObject());
-		}
 
-		it.next();
+			it.next();
+		}
 	}
 
+	log_manager.writeLog("LevelManager::loadLevel() level with label <%s> is represented with <%d>", label.c_str(), levels[label]);
+
 	//Prepare World Manager and Scene Graph
-	scene_graph.setLevel(levels[label]);
-//	world_manager.setLevel(levels[label]);
+	scene_graph.setLevel(1);
+	//	if (scene_graph.setLevel(levels[label])){
+	//		log_manager.writeLog("LevelManager::loadLevel() encountered an error when calling SceneGraph::setLevel() with an argument of <%d>!", levels[label]);
+	//	}
 
 	//Actual load
 	string filename = level_files[label];
@@ -207,7 +222,7 @@ bool LevelManager::loadLevel(string label){
 	int lineNumber = 0;
 
 	while (levelFile.is_open() && levelFile.good()){
-		readLine(&levelFile, &lineNumber);
+		readLine(&levelFile, &lineNumber, &current_level_obj);
 	}
 
 	levelFile.close();
@@ -218,7 +233,10 @@ bool LevelManager::loadLevel(string label){
 		return false;
 	}
 
-	world_manager.setLevel(levels[label]);
+	world_manager.setLevel(1);
+	//	if (world_manager.setLevel(levels[label])){
+	//		log_manager.writeLog("LevelManager::loadLevel() encountered an error when calling WorldManager::setLevel() with an argument of <%d>!", levels[label]);
+	//	}
 
 	log_manager.writeLog("LevelManager::loadLevel() loaded a level with a label of <%s> and with <%d> lines", label.c_str(), lineNumber);
 	return true;
