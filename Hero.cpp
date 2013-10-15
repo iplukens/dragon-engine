@@ -113,6 +113,7 @@ void Hero::kbd(EventKeyboard *p_keyboard_event) {
 		break;
 	case 'q':			// quit
 		world_manager.markForDelete(this);
+		gameover();
 		break;
 	};
 	return;
