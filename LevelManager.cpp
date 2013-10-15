@@ -20,11 +20,8 @@
 #include "Points.h"
 #include "MaxHealthPickup.h"
 #include "RapidFire.h"
-<<<<<<< HEAD
 #include "Exit.h"
-=======
 #include "Monster2.h"
->>>>>>> 2f1e37baa7a3e1a754f037240346e166f70b41a4
 
 using std::string;
 using std::map;
