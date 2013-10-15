@@ -13,9 +13,12 @@
 #define LEVEL_UP_EVENT "level_up"
 
 class EventLevelUp: public Event {
+private:
+	int level;
 public:
-	EventLevelUp();
+	EventLevelUp(int current_level);
 	~EventLevelUp();
+	int getLevel();
 };
 
 #endif /* EVENTLEVELUP_H_ */

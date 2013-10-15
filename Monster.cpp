@@ -29,24 +29,25 @@ Monster::Monster(Position pos) {
 	WorldManager &world_manager = WorldManager::getInstance();
 
 	//TODO: This takes too long to find, is there a more efficient way?
-/*
-	ObjectList objects = world_manager.getAllObjects();
-	ObjectListIterator iterator = objects.createIterator();
+	/*
+	 ObjectList objects = world_manager.getAllObjects();
+	 ObjectListIterator iterator = objects.createIterator();
 
-	bool found = false;
-	while(!iterator.isDone() && !found){
-		if (iterator.currentObject()->getType() == "Hero"){
+	 bool found = false;
+	 while(!iterator.isDone() && !found){
+	 if (iterator.currentObject()->getType() == "Hero"){
 
-			hero_pos = iterator.currentObject()->getPosition();
+	 hero_pos = iterator.currentObject()->getPosition();
 
-			found = true;
-		}
-	}
-*/
+	 found = true;
+	 }
+	 }
+	 */
 
 //	if (!found){
-		Position h_pos(world_manager.getBoundary().getHorizontal()/ 2, world_manager.getBoundary().getVertical() / 2);
-		hero_pos = h_pos;
+	Position h_pos(world_manager.getBoundary().getHorizontal() / 2,
+			world_manager.getBoundary().getVertical() / 2);
+	hero_pos = h_pos;
 //	}
 
 	setPosition(pos);
@@ -96,8 +97,12 @@ int Monster::eventHandler(Event *p_e) {
 		EventCollision *p_c_e = static_cast<EventCollision *>(p_e);
 		handleCollision(p_c_e);
 	}
-	if (p_e->getType() == LEVEL_UP_EVENT  && max_speed_cooldown > 1){
-		max_speed_cooldown--;
+	if (p_e->getType() == LEVEL_UP_EVENT) {
+		EventLevelUp *le = static_cast<EventLevelUp *>(p_e);
+		max_speed_cooldown -= le->getLevel();
+		if (max_speed_cooldown < 1) {
+			max_speed_cooldown = 1;
+		}
 	}
 	return 0;
 }
@@ -107,8 +112,9 @@ void Monster::move_to_hero() {
 	Position pos = getPosition();
 	Position new_pos(getPosition().getX(), getPosition().getY());
 
-	if (!haveCollidedWithMaze){
-		if (abs(pos.getX() - hero_pos.getX()) > abs(pos.getY() - hero_pos.getY())) {
+	if (!haveCollidedWithMaze) {
+		if (abs(pos.getX() - hero_pos.getX())
+				> abs(pos.getY() - hero_pos.getY())) {
 			if (pos.getX() > hero_pos.getX()) {
 				new_pos.setX(getPosition().getX() - 1);
 			} else if (pos.getX() < hero_pos.getX()) {
@@ -121,14 +127,15 @@ void Monster::move_to_hero() {
 		}
 		wm.moveObject(this, new_pos);
 	} else {
-		if (abs(pos.getX() - hero_pos.getX()) > abs(pos.getY() - hero_pos.getY())) {
-			if (negativeCollisionDirection){
+		if (abs(pos.getX() - hero_pos.getX())
+				> abs(pos.getY() - hero_pos.getY())) {
+			if (negativeCollisionDirection) {
 				new_pos.setY(getPosition().getY() + 1);
 			} else {
 				new_pos.setY(getPosition().getY() - 1);
 			}
-		}else {
-			if (negativeCollisionDirection){
+		} else {
+			if (negativeCollisionDirection) {
 				new_pos.setX(getPosition().getX() + 1);
 			} else {
 				new_pos.setX(getPosition().getX() - 1);
@@ -138,7 +145,7 @@ void Monster::move_to_hero() {
 
 		collisionWanderCount--;
 
-		if (collisionWanderCount == 0){
+		if (collisionWanderCount == 0) {
 			haveCollidedWithMaze = false;
 		}
 	}
@@ -151,8 +158,7 @@ void Monster::handleCollision(EventCollision* e) {
 	string collision_obj1_type = e->getObject1()->getType();
 	string collision_obj2_type = e->getObject2()->getType();
 
-	if (collision_obj1_type == "Bullet"
-			|| collision_obj2_type == "Bullet") {
+	if (collision_obj1_type == "Bullet" || collision_obj2_type == "Bullet") {
 		Explosion *p_explosion = new Explosion;
 		p_explosion->setPosition(this->getPosition());
 		world_manager.markForDelete(e->getObject1());
@@ -167,7 +173,7 @@ void Monster::handleCollision(EventCollision* e) {
 	}
 }
 
-Monster::~Monster(){
+Monster::~Monster() {
 	WorldManager &wm = WorldManager::getInstance();
 	// send "view" event with points to interested ViewObjects
 	EventView ev(POINTS_STRING, 10, true);

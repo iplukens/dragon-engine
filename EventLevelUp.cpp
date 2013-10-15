@@ -7,7 +7,8 @@
 
 #include "EventLevelUp.h"
 
-EventLevelUp::EventLevelUp() {
+EventLevelUp::EventLevelUp(int current_level) {
+	level = current_level;
 	setType(LEVEL_UP_EVENT);
 }
 
@@ -15,3 +16,6 @@ EventLevelUp::~EventLevelUp() {
 	// TODO Auto-generated destructor stub
 }
 
+int EventLevelUp::getLevel(){
+	return level;
+}

@@ -69,8 +69,12 @@ int Monster2::eventHandler(Event *p_e) {
 		EventCollision *p_c_e = static_cast<EventCollision *>(p_e);
 		hit(p_c_e);
 	}
-	if (p_e->getType() == LEVEL_UP_EVENT){
-		max_speed_cooldown--;
+	if (p_e->getType() == LEVEL_UP_EVENT) {
+		EventLevelUp *le = static_cast<EventLevelUp *>(p_e);
+		max_speed_cooldown -= le->getLevel();
+		if (max_speed_cooldown < 1) {
+			max_speed_cooldown = 1;
+		}
 	}
 	return 0;
 }
@@ -106,7 +110,7 @@ void Monster2::hit(EventCollision* e) {
 	}
 }
 
-Monster2::~Monster2(){
+Monster2::~Monster2() {
 	WorldManager &wm = WorldManager::getInstance();
 	// send "view" event with points to interested ViewObjects
 	EventView ev(POINTS_STRING, 5, true);

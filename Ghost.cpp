@@ -94,9 +94,13 @@ int Ghost::eventHandler(Event *p_e) {
 		EventCollision *p_c_e = static_cast<EventCollision *>(p_e);
 		handleCollision(p_c_e);
 	}
-	if (p_e->getType() == LEVEL_UP_EVENT && max_speed_cooldown > 1) {
-		max_speed_cooldown--;
-		ghost_velocity += 0.025;
+	if (p_e->getType() == LEVEL_UP_EVENT) {
+		EventLevelUp *le = static_cast<EventLevelUp *>(p_e);
+		max_speed_cooldown -= le->getLevel();
+		ghost_velocity += 0.025 * le->getLevel();
+		if (max_speed_cooldown < 1){
+			max_speed_cooldown = 1;
+		}
 	}
 	return 0;
 }
