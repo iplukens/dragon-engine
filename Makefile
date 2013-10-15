@@ -33,7 +33,12 @@ GAMESRC = Bullet.cpp \
 	LevelManager.cpp \
 	PointsPickup.cpp \
 	Ghost.cpp \
+<<<<<<< HEAD
 	Exit.cpp
+=======
+	Monster2.cpp \
+	EventLevelUp.cpp
+>>>>>>> 2f1e37baa7a3e1a754f037240346e166f70b41a4
 # ENGINESRC= Event.cpp \
 	# LogManager.cpp \
 	# Clock.cpp \

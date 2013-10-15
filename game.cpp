@@ -49,6 +49,7 @@ void loadResources() {
 
 	//Monsters
 	resource_manager.loadSprite("sprites/monster1-spr.txt", "monster1");
+	resource_manager.loadSprite("sprites/monster2-spr.txt", "monster2");
 	resource_manager.loadSprite("sprites/ghost-spr.txt", "ghost");
 
 	//Effects
@@ -71,4 +72,5 @@ void loadResources() {
 	//Levels
 	level_manager.prepareLevel("levels/Level1.txt", "level_1");
 	level_manager.prepareLevel("levels/Level2.txt", "level_2");
+	level_manager.prepareLevel("levels/Level3.txt", "level_3");
 }

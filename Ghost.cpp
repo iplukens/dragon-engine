@@ -14,15 +14,18 @@
 #include "EventHeroMove.h"
 #include "EventStep.h"
 #include "EventCollision.h"
+#include "EventLevelUp.h"
 #include "Explosion.h"
 #include "EventView.h"
 #include "Points.h"
 
 #include <stdlib.h>
 
-#define GHOST_VELOCITY 0.025
+// I want to change this so that I can make him faster, okay? #define GHOST_VELOCITY 0.025
 
 Ghost::Ghost(Position pos) {
+	ghost_velocity = 0.025;
+
 	WorldManager &world_manager = WorldManager::getInstance();
 
 	setPosition(pos);
@@ -31,24 +34,25 @@ Ghost::Ghost(Position pos) {
 	setAltitude(MAX_ALTITUDE);
 
 	//TODO: This takes too long to find, is there a more efficient way?
-/*
-	ObjectList objects = world_manager.getAllObjects();
-	ObjectListIterator iterator = objects.createIterator();
+	/*
+	 ObjectList objects = world_manager.getAllObjects();
+	 ObjectListIterator iterator = objects.createIterator();
 
-	bool found = false;
-	while(!iterator.isDone() && !found){
-		if (iterator.currentObject()->getType() == "Hero"){
+	 bool found = false;
+	 while(!iterator.isDone() && !found){
+	 if (iterator.currentObject()->getType() == "Hero"){
 
-			hero_pos = iterator.currentObject()->getPosition();
+	 hero_pos = iterator.currentObject()->getPosition();
 
-			found = true;
-		}
-	}
-*/
+	 found = true;
+	 }
+	 }
+	 */
 
 //	if (!found){
-		Position h_pos(world_manager.getBoundary().getHorizontal()/ 2, world_manager.getBoundary().getVertical() / 2);
-		hero_pos = h_pos;
+	Position h_pos(world_manager.getBoundary().getHorizontal() / 2,
+			world_manager.getBoundary().getVertical() / 2);
+	hero_pos = h_pos;
 //	}
 
 	LogManager &lm = LogManager::getInstance();
@@ -64,10 +68,12 @@ Ghost::Ghost(Position pos) {
 	}
 
 	speed_cooldown = 30;
+	max_speed_cooldown = 30;
 
 	registerInterest(HERO_MOVE_EVENT);
 	registerInterest(STEP_EVENT);
 	registerInterest(COLLISION_EVENT);
+	registerInterest(LEVEL_UP_EVENT);
 }
 
 int Ghost::eventHandler(Event *p_e) {
@@ -79,7 +85,7 @@ int Ghost::eventHandler(Event *p_e) {
 	if (p_e->getType() == STEP_EVENT) {
 		speed_cooldown--;
 		if (speed_cooldown == 0) {
-			speed_cooldown = 10;
+			speed_cooldown = max_speed_cooldown;
 			move_to_hero();
 		}
 		return 1;
@@ -87,6 +93,14 @@ int Ghost::eventHandler(Event *p_e) {
 	if (p_e->getType() == COLLISION_EVENT) {
 		EventCollision *p_c_e = static_cast<EventCollision *>(p_e);
 		handleCollision(p_c_e);
+	}
+	if (p_e->getType() == LEVEL_UP_EVENT) {
+		EventLevelUp *le = static_cast<EventLevelUp *>(p_e);
+		max_speed_cooldown -= le->getLevel();
+		ghost_velocity += 0.025 * le->getLevel();
+		if (max_speed_cooldown < 1){
+			max_speed_cooldown = 1;
+		}
 	}
 	return 0;
 }
@@ -97,14 +111,14 @@ void Ghost::move_to_hero() {
 
 	if (abs(pos.getX() - hero_pos.getX()) > abs(pos.getY() - hero_pos.getY())) {
 		if (pos.getX() > hero_pos.getX()) {
-			setXVelocity(-GHOST_VELOCITY);
+			setXVelocity(-ghost_velocity);
 		} else if (pos.getX() < hero_pos.getX()) {
-			setXVelocity(GHOST_VELOCITY);
+			setXVelocity(ghost_velocity);
 		}
 	} else if (pos.getY() > hero_pos.getY()) {
-		setYVelocity(-GHOST_VELOCITY);
+		setYVelocity(-ghost_velocity);
 	} else {
-		setYVelocity(GHOST_VELOCITY);
+		setYVelocity(ghost_velocity);
 	}
 }
 
@@ -115,8 +129,7 @@ void Ghost::handleCollision(EventCollision* e) {
 	string collision_obj1_type = e->getObject1()->getType();
 	string collision_obj2_type = e->getObject2()->getType();
 
-	if (collision_obj1_type == "Bullet"
-			|| collision_obj2_type == "Bullet") {
+	if (collision_obj1_type == "Bullet" || collision_obj2_type == "Bullet") {
 		Explosion *p_explosion = new Explosion;
 		p_explosion->setPosition(this->getPosition());
 		world_manager.markForDelete(e->getObject1());
@@ -124,7 +137,7 @@ void Ghost::handleCollision(EventCollision* e) {
 	}
 }
 
-Ghost::~Ghost(){
+Ghost::~Ghost() {
 	WorldManager &wm = WorldManager::getInstance();
 	// send "view" event with points to interested ViewObjects
 	EventView ev(POINTS_STRING, 10, true);

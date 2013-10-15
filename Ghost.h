@@ -17,7 +17,9 @@ private:
 	Position hero_pos; // where we are currently
 	void move_to_hero(); // move to the hero
 	int speed_cooldown; // make sure doesn't move every frame
+	int max_speed_cooldown; // controls how long it takes to move
 	void handleCollision (EventCollision* e);
+	float ghost_velocity;
 public:
 	Ghost(Position pos);
 	~Ghost();
