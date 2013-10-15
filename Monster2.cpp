@@ -17,6 +17,7 @@
 #include "Explosion.h"
 #include "Points.h"
 #include "EventView.h"
+#include "EventLevelUp.h"
 
 #include <stdlib.h>
 
@@ -42,10 +43,12 @@ Monster2::Monster2(Position pos) {
 	}
 
 	speed_cooldown = 8;
+	max_speed_cooldown = 8;
 
 	registerInterest(HERO_MOVE_EVENT);
 	registerInterest(STEP_EVENT);
 	registerInterest(COLLISION_EVENT);
+	registerInterest(LEVEL_UP_EVENT);
 }
 
 int Monster2::eventHandler(Event *p_e) {
@@ -57,7 +60,7 @@ int Monster2::eventHandler(Event *p_e) {
 	if (p_e->getType() == STEP_EVENT) {
 		speed_cooldown--;
 		if (speed_cooldown == 0) {
-			speed_cooldown = 8;
+			speed_cooldown = max_speed_cooldown;
 			move_to_hero();
 		}
 		return 1;
@@ -65,6 +68,9 @@ int Monster2::eventHandler(Event *p_e) {
 	if (p_e->getType() == COLLISION_EVENT) {
 		EventCollision *p_c_e = static_cast<EventCollision *>(p_e);
 		hit(p_c_e);
+	}
+	if (p_e->getType() == LEVEL_UP_EVENT){
+		max_speed_cooldown--;
 	}
 	return 0;
 }

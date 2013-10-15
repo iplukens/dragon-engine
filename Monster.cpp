@@ -14,6 +14,7 @@
 #include "EventHeroMove.h"
 #include "EventStep.h"
 #include "EventCollision.h"
+#include "EventLevelUp.h"
 #include "Explosion.h"
 #include "EventView.h"
 #include "Points.h"
@@ -65,6 +66,7 @@ Monster::Monster(Position pos) {
 	}
 
 	speed_cooldown = 10;
+	max_speed_cooldown = 10;
 
 	haveCollidedWithMaze = false;
 	collisionWanderCount = 0;
@@ -73,6 +75,7 @@ Monster::Monster(Position pos) {
 	registerInterest(HERO_MOVE_EVENT);
 	registerInterest(STEP_EVENT);
 	registerInterest(COLLISION_EVENT);
+	registerInterest(LEVEL_UP_EVENT);
 }
 
 int Monster::eventHandler(Event *p_e) {
@@ -84,7 +87,7 @@ int Monster::eventHandler(Event *p_e) {
 	if (p_e->getType() == STEP_EVENT) {
 		speed_cooldown--;
 		if (speed_cooldown == 0) {
-			speed_cooldown = 10;
+			speed_cooldown = max_speed_cooldown;
 			move_to_hero();
 		}
 		return 1;
@@ -92,6 +95,9 @@ int Monster::eventHandler(Event *p_e) {
 	if (p_e->getType() == COLLISION_EVENT) {
 		EventCollision *p_c_e = static_cast<EventCollision *>(p_e);
 		handleCollision(p_c_e);
+	}
+	if (p_e->getType() == LEVEL_UP_EVENT  && max_speed_cooldown > 1){
+		max_speed_cooldown--;
 	}
 	return 0;
 }
