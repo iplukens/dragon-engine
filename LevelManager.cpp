@@ -77,12 +77,12 @@ void convertObject(char object, Position pos, ObjectList* list){
 
 	case 'O':
 		log_manager.writeLog("LevelManager::loadLevel() is creating a Max Health Pickup at Position <%d, %d>", pos.getX(), pos.getY());
-		new MaxHealthPickup(pos);
+		list->insert(new MaxHealthPickup(pos));
 		break;
 
 	case 'R':
 		log_manager.writeLog("LevelManager::loadLevel() is creating a Rapid Fire Pickup at Position <%d, %d>", pos.getX(), pos.getY());
-		new RapidFire(pos);
+		list->insert(new RapidFire(pos));
 		break;
 		//Ignore space and newlines and null terminators
 	case '\n':
