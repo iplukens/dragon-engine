@@ -38,6 +38,7 @@ protected:
 	void changeSprite(string type);
 	void hit(EventCollision *e);
 	void sendMoveEvent();
+	void gameover();
 
 public:
 	Hero();

@@ -179,6 +179,11 @@ void Hero::step() {
 }
 
 Hero::~Hero() {
+	//Use to be gameover, but removed for level transitions
+}
+
+//Gameover
+void Hero::gameover(){
 	// make big explosion
 	for (int i = -8; i <= 8; i += 5) {
 		for (int j = -5; j <= 5; j += 3) {
@@ -192,6 +197,7 @@ Hero::~Hero() {
 	GameManager &gm = GameManager::getInstance();
 	gm.setGameOver();
 }
+
 
 // evaluates what hit the hero
 // goes through checking if it's any of the pickup items or is it a saucer
@@ -233,7 +239,10 @@ void Hero::hit(EventCollision *e) {
 		if (current_health == 0) {
 			world_manager.markForDelete(e->getObject1());
 			world_manager.markForDelete(e->getObject2());
+
+			gameover();
 		}
+
 		Explosion *p_explosion = new Explosion;
 		if (e->getObject1()->getType() == "Monster1") {
 			p_explosion->setPosition(e->getObject1()->getPosition());
@@ -242,6 +251,7 @@ void Hero::hit(EventCollision *e) {
 			p_explosion->setPosition(e->getObject2()->getPosition());
 			world_manager.markForDelete(e->getObject2());
 		}
+
 	} else if (((e->getObject1()->getType()) == "points_pickup")
 			|| ((e->getObject2()->getType()) == "points_pickup")){
 
