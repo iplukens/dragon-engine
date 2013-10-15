@@ -1,0 +1,31 @@
+//Lines with // at the start are ignored
+//Blank lines are also ignored
+//Space is an empty space
+//Levels are automatically placed at the center of the screen
+//H is hero
+//# is a wall
+//M is a monster
+//G is a ghost
+//+ is a HealthPickup
+//* is a PointsPickup
+
+#########################################################
+#O                    G                               + #
+#    ############                   ###############     #
+#    #                                      M     #     #
+#    #   M            M                           #     #
+#    #                         ########           #     #
+#    #               R                            #     #
+#    #                                 #          #     #
+#                  ###########         #                #
+#                  #                   #                #
+#    #             #        H          #          #     #
+#    #                                  ##        #     #
+#    #                    R                       #     #
+#    #                                            #     #
+#    #        ##########################          #     #
+#    #  G                                     G   #     #
+#    #                                            #     #
+# +  ############        M          ###############     #
+#                                                    +  #
+#########################################################

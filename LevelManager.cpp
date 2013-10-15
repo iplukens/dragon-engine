@@ -16,6 +16,8 @@
 #include "Monster.h"
 #include "Ghost.h"
 #include "Points.h"
+#include "MaxHealthPickup.h"
+#include "RapidFire.h"
 
 using std::string;
 using std::map;
@@ -70,6 +72,15 @@ void convertObject(char object, Position pos){
 		new PointsPickup(pos);
 		break;
 
+	case 'O':
+		log_manager.writeLog("LevelManager::loadLevel() is creating a Max Health Pickup at Position <%d, %d>", pos.getX(), pos.getY());
+		new MaxHealthPickup(pos);
+		break;
+
+	case 'R':
+		log_manager.writeLog("LevelManager::loadLevel() is creating a Rapid Fire Pickup at Position <%d, %d>", pos.getX(), pos.getY());
+		new RapidFire(pos);
+		break;
 		//Ignore space and newlines and null terminators
 	case '\n':
 		break;

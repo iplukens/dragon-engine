@@ -89,7 +89,6 @@ void GameStart::start() {
 	//Load level and set level
 	level_manager.loadLevel("level_1");
 
-	// create hero
 	ViewObject *h_vo = new ViewObject; // used for health count
 	h_vo->setLocation(TOP_LEFT);
 	h_vo->setViewString("Health");
@@ -98,38 +97,6 @@ void GameStart::start() {
 	h_vo->setColor(COLOR_RED);
 
 	new Points;
-
-//	new Hero;
-//
-//	//Outer maze walls
-//	for (int i = 3; i < world_manager.getBoundary().getVertical(); i++) {
-//		new MazePiece(Position(0, i));
-//		new MazePiece(
-//				Position(world_manager.getBoundary().getHorizontal() - 1, i));
-//	}
-//	for (int i = 1; i < world_manager.getBoundary().getHorizontal(); i++) {
-//		new MazePiece(Position(i, 3));
-//		new MazePiece(
-//				Position(i, world_manager.getBoundary().getVertical() - 1));
-//	}
-//
-//	//Inner maze walls
-//	for (int i = 0; i < MAZE_WALL_COUNT; i++) {
-//		new MazePiece(
-//				Position(
-//						random() % (world_manager.getBoundary().getHorizontal() - 3) + 1,
-//						random() % (world_manager.getBoundary().getVertical() - 4) + 3));
-//	}
-//
-//	new Monster(Position(5, 5));
-//	new Monster(Position(10, 5));
-//	new Monster(Position(15, 10));
-//
-//	new HealthPickup(Position(20, 20));
-//	new RapidFire(Position(21, 21));
-
-	// tell world manager to goto game level
-//	world_manager.setLevel(PLAY_LEVEL);
 }
 
 // override default draw so as not to display "value"
