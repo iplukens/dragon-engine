@@ -1,11 +1,13 @@
 #include <string>
 #include <map>
+#include <list>
 #include <iostream>
 #include <fstream>
 
 //Engine includes
 #include "LogManager.h"
 #include "ViewObject.h"
+#include "GameManager.h"
 
 //Game includes
 #include "LevelManager.h"
@@ -21,6 +23,7 @@
 
 using std::string;
 using std::map;
+using std::list;
 using std::ifstream;
 
 //Return true if string only contains spaces
@@ -153,6 +156,7 @@ int LevelManager::prepareLevel(string filename, string label){
 	log_manager.writeLog("LevelManager::prepareLevel() prepared the level stored in filename <%s> with a label of <%s> and an int of <%d>", filename.c_str(), label.c_str(), level_count);
 	level_files[label] = filename;
 	levels[label] = level_count;
+	level_order.push_back(label);
 
 	return 0;
 }
@@ -240,4 +244,20 @@ bool LevelManager::loadLevel(string label){
 
 	log_manager.writeLog("LevelManager::loadLevel() loaded a level with a label of <%s> and with <%d> lines", label.c_str(), lineNumber);
 	return true;
+}
+
+bool LevelManager::nextLevel(){
+	if (level_order.empty()){
+		//We are out of levels, it's game over!
+		GameManager &game_manager = GameManager::getInstance();
+		game_manager.setGameOver(true);
+
+		return false;
+	}
+
+	//Load and then delete the first level from the list
+	string label = level_order.front();
+	level_order.pop_front();
+
+	return loadLevel(label);
 }

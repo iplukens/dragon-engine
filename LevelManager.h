@@ -7,6 +7,7 @@
 
 #include <string>
 #include <map>
+#include <list>
 
 #include "Position.h"
 #include "Manager.h"
@@ -25,6 +26,7 @@
 
 using std::string;
 using std::map;
+using std::list;
 
 class LevelManager : public Manager {
 
@@ -36,6 +38,7 @@ class LevelManager : public Manager {
   map<string, int> levels;				///< Array of filenames and level
   int level_count;                       ///< Count of number of loaded levels.
   ObjectList current_level_obj; 		///< Current objects in the level
+  list<string> level_order; 			///< Order to use when calling nextLevel
 
  public:
   /// Get the one and only instance of the ResourceManager.
@@ -59,6 +62,10 @@ class LevelManager : public Manager {
   /// Find Level with indicated label.
   /// Returns true if loading succeeded, false if it failed
   bool loadLevel(string label);
+
+  /// Loads the next level in the list
+  /// Returns true if loading succeeded, false if it failed
+  bool nextLevel();
 };
 
 #endif //__LEVEL_MANAGER_H__
