@@ -20,6 +20,7 @@
 #include "Points.h"
 #include "MaxHealthPickup.h"
 #include "RapidFire.h"
+#include "Exit.h"
 
 using std::string;
 using std::map;
@@ -84,6 +85,12 @@ void convertObject(char object, Position pos, ObjectList* list){
 		log_manager.writeLog("LevelManager::loadLevel() is creating a Rapid Fire Pickup at Position <%d, %d>", pos.getX(), pos.getY());
 		list->insert(new RapidFire(pos));
 		break;
+
+	case 'E':
+		log_manager.writeLog("LevelManager::loadLevel() is creating an Exit at Position <%d, %d>", pos.getX(), pos.getY());
+		list->insert(new Exit(pos));
+		break;
+
 		//Ignore space and newlines and null terminators
 	case '\n':
 		break;

@@ -61,6 +61,9 @@ void loadResources() {
 	resource_manager.loadSprite("sprites/max-spr.txt", "max");
 	resource_manager.loadSprite("sprites/points-spr.txt", "points_pickup");
 
+	//Misc objects
+	resource_manager.loadSprite("sprites/exit-spr.txt", "exit");
+
 	//Splash screens
 	resource_manager.loadSprite("sprites/gamestart-spr.txt", "game_start");
 	resource_manager.loadSprite("sprites/gameover-spr.txt", "gameover");

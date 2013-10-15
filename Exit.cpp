@@ -17,6 +17,7 @@
 #include "Explosion.h"
 #include "EventView.h"
 #include "Points.h"
+#include "LevelManager.h"
 
 #include <stdlib.h>
 
@@ -25,8 +26,8 @@ Exit::Exit(Position pos) {
 
 	setPosition(pos);
 	setType("Exit");
-	setSolidness(SPECTRAL); //Exits stay on top
-	setAltitude(MAX_ALTITUDE);
+	setSolidness(HARD);
+	setAltitude(MAX_ALTITUDE); //Exits stay on top
 
 	LogManager &lm = LogManager::getInstance();
 	ResourceManager &rm = ResourceManager::getInstance();
@@ -58,20 +59,19 @@ void Exit::handleCollision(EventCollision* e) {
 	string collision_obj1_type = e->getObject1()->getType();
 	string collision_obj2_type = e->getObject2()->getType();
 
+	//Transition to next level, hero made it!
 	if (collision_obj1_type == "Hero"
 			|| collision_obj2_type == "Hero") {
 
-		//TODO Transition level
-		Explosion *p_explosion = new Explosion;
-		p_explosion->setPosition(this->getPosition());
-		world_manager.markForDelete(e->getObject1());
-		world_manager.markForDelete(e->getObject2());
+		LevelManager &level_manager = LevelManager::getInstance();
+		level_manager.nextLevel();
 	}
 }
 
 Exit::~Exit(){
 	WorldManager &wm = WorldManager::getInstance();
-	// send "view" event with points to interested ViewObjects
-//	EventView ev(POINTS_STRING, 10, true);
-//	wm.onEvent(&ev);
+
+	//send "view" event with points to interested ViewObjects
+	EventView ev(POINTS_STRING, 100, true);
+	wm.onEvent(&ev);
 }

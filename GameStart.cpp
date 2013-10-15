@@ -89,7 +89,8 @@ void GameStart::start() {
 	LevelManager &level_manager = LevelManager::getInstance();
 
 	//Load level and set level
-	level_manager.loadLevel("level_1");
+	level_manager.nextLevel();
+//	level_manager.loadLevel("level_1");
 //	level_manager.loadLevel("level_2");
 
 	ViewObject *h_vo = new ViewObject; // used for health count
