@@ -32,7 +32,8 @@ GAMESRC = Bullet.cpp \
 	GameStart.cpp \
 	LevelManager.cpp \
 	PointsPickup.cpp \
-	Ghost.cpp
+	Ghost.cpp \
+	Monster2.cpp
 # ENGINESRC= Event.cpp \
 	# LogManager.cpp \
 	# Clock.cpp \
