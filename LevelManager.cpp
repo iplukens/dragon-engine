@@ -1,11 +1,13 @@
 #include <string>
 #include <map>
+#include <list>
 #include <iostream>
 #include <fstream>
 
 //Engine includes
 #include "LogManager.h"
 #include "ViewObject.h"
+#include "GameManager.h"
 
 //Game includes
 #include "LevelManager.h"
@@ -22,6 +24,7 @@
 
 using std::string;
 using std::map;
+using std::list;
 using std::ifstream;
 
 //Return true if string only contains spaces
@@ -99,7 +102,7 @@ void convertObject(char object, Position pos, ObjectList* list) {
 		log_manager.writeLog(
 				"LevelManager::loadLevel() is creating a Max Health Pickup at Position <%d, %d>",
 				pos.getX(), pos.getY());
-		new MaxHealthPickup(pos);
+		list->insert(new MaxHealthPickup(pos));
 		break;
 
 		// rapid fire pickup
@@ -107,7 +110,7 @@ void convertObject(char object, Position pos, ObjectList* list) {
 		log_manager.writeLog(
 				"LevelManager::loadLevel() is creating a Rapid Fire Pickup at Position <%d, %d>",
 				pos.getX(), pos.getY());
-		new RapidFire(pos);
+		list->insert(new RapidFire(pos));
 		break;
 		//Ignore space and newlines and null terminators
 	case '\n':
@@ -187,6 +190,7 @@ int LevelManager::prepareLevel(string filename, string label) {
 			filename.c_str(), label.c_str(), level_count);
 	level_files[label] = filename;
 	levels[label] = level_count;
+	level_order.push_back(label);
 
 	return 0;
 }
@@ -283,4 +287,20 @@ bool LevelManager::loadLevel(string label) {
 			"LevelManager::loadLevel() loaded a level with a label of <%s> and with <%d> lines",
 			label.c_str(), lineNumber);
 	return true;
+}
+
+bool LevelManager::nextLevel() {
+	if (level_order.empty()) {
+		//We are out of levels, it's game over!
+		GameManager &game_manager = GameManager::getInstance();
+		game_manager.setGameOver(true);
+
+		return false;
+	}
+
+	//Load and then delete the first level from the list
+	string label = level_order.front();
+	level_order.pop_front();
+
+	return loadLevel(label);
 }
