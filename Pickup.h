@@ -13,6 +13,7 @@
 #include "EventCollision.h"
 #include "EventOut.h"
 #include "EventStep.h"
+#include "LevelManager.h"
 
 // standard header for Object that the hero can pick up
 class Pickup: public Object {
@@ -27,6 +28,12 @@ public:
 			return 1;
 		}
 		return 0;
+	}
+
+	virtual ~Pickup(){
+		LevelManager &level_manager = LevelManager::getInstance();
+
+		level_manager.objectDelete(this);
 	}
 };
 
