@@ -23,9 +23,10 @@
 #include <stdlib.h>
 
 #define GHOST_VELOCITY 0.025
+#define MAX_SPEED_COOLDOWN 5
 
 Ghost::Ghost(Position pos) {
-	ghost_velocity = 0.025;
+	ghost_velocity = GHOST_VELOCITY;
 
 	WorldManager &world_manager = WorldManager::getInstance();
 
@@ -68,8 +69,8 @@ Ghost::Ghost(Position pos) {
 		setSpriteSlowdown(15);
 	}
 
-	speed_cooldown = 30;
-	max_speed_cooldown = 10;
+	max_speed_cooldown = MAX_SPEED_COOLDOWN;
+	speed_cooldown = max_speed_cooldown;
 
 	registerInterest(HERO_MOVE_EVENT);
 	registerInterest(STEP_EVENT);
@@ -98,7 +99,7 @@ int Ghost::eventHandler(Event *p_e) {
 	if (p_e->getType() == LEVEL_UP_EVENT) {
 		EventLevelUp *le = static_cast<EventLevelUp *>(p_e);
 		max_speed_cooldown -= le->getLevel();
-		ghost_velocity += 0.025 * le->getLevel();
+		ghost_velocity += GHOST_VELOCITY * le->getLevel();
 		if (max_speed_cooldown < 1){
 			max_speed_cooldown = 1;
 		}
