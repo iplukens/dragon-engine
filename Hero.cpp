@@ -29,7 +29,7 @@
 #define LEFT_KEY 260
 #define RIGHT_KEY 261
 
-Hero::Hero(Position pos){
+Hero::Hero(Position pos) {
 	LogManager &lm = LogManager::getInstance();
 	changeSprite("hero_r");
 
@@ -120,21 +120,22 @@ void Hero::kbd(EventKeyboard *p_keyboard_event) {
 }
 
 // changes the sprite according to the direction the hero is facing
-void Hero::changeSprite(string type){
+void Hero::changeSprite(string type) {
 	LogManager &lm = LogManager::getInstance();
 	ResourceManager &rm = ResourceManager::getInstance();
 	Sprite *p_temp_sprite;
 
 	p_temp_sprite = rm.getSprite(type);
 	if (!p_temp_sprite) {
-		lm.writeLog("Hero::Hero(): Warning! Sprite '%s' not found", type.c_str());
+		lm.writeLog("Hero::Hero(): Warning! Sprite '%s' not found",
+				type.c_str());
 	} else {
 		setSprite(p_temp_sprite);
 		setSpriteSlowdown(3);		// third speed animation
 	}
 }
 
-void Hero::sendMoveEvent(){
+void Hero::sendMoveEvent() {
 	EventHeroMove *move_event = new EventHeroMove(getPosition());
 	WorldManager &wm = WorldManager::getInstance();
 	wm.onEvent(move_event);
@@ -146,8 +147,7 @@ void Hero::moveY(int dy) {
 	WorldManager &wm = WorldManager::getInstance();
 
 	Position new_pos(getPosition().getX(), getPosition().getY() + dy);
-	if ((new_pos.getY() > 3)
-			&& (new_pos.getY() < gm.getVertical()))
+	if ((new_pos.getY() > 3) && (new_pos.getY() < gm.getVertical()))
 		wm.moveObject(this, new_pos);
 	sendMoveEvent();
 }
@@ -158,8 +158,7 @@ void Hero::moveX(int dx) {
 	WorldManager &wm = WorldManager::getInstance();
 
 	Position new_pos(getPosition().getX() + dx, getPosition().getY());
-	if ((new_pos.getX() > 3)
-			&& (new_pos.getX() < gm.getHorizontal()))
+	if ((new_pos.getX() > 3) && (new_pos.getX() < gm.getHorizontal()))
 		wm.moveObject(this, new_pos);
 	sendMoveEvent();
 }
@@ -184,7 +183,7 @@ Hero::~Hero() {
 }
 
 //Gameover
-void Hero::gameover(){
+void Hero::gameover() {
 	// make big explosion
 	for (int i = -8; i <= 8; i += 5) {
 		for (int j = -5; j <= 5; j += 3) {
@@ -198,7 +197,6 @@ void Hero::gameover(){
 	GameManager &gm = GameManager::getInstance();
 	gm.setGameOver();
 }
-
 
 // evaluates what hit the hero
 // goes through checking if it's any of the pickup items or is it a saucer
@@ -253,8 +251,50 @@ void Hero::hit(EventCollision *e) {
 			world_manager.markForDelete(e->getObject2());
 		}
 
+	} else if (((e->getObject1()->getType()) == "Monster2")
+			|| ((e->getObject2()->getType()) == "Monster2")) {
+		current_health--;
+		EventView ev("Health", -1, true);
+		world_manager.onEvent(&ev);
+		if (current_health == 0) {
+			world_manager.markForDelete(e->getObject1());
+			world_manager.markForDelete(e->getObject2());
+
+			gameover();
+		}
+
+		Explosion *p_explosion = new Explosion;
+		if (e->getObject1()->getType() == "Monster2") {
+			p_explosion->setPosition(e->getObject1()->getPosition());
+			world_manager.markForDelete(e->getObject1());
+		} else {
+			p_explosion->setPosition(e->getObject2()->getPosition());
+			world_manager.markForDelete(e->getObject2());
+		}
+
+	} else if (((e->getObject1()->getType()) == "Ghost")
+			|| ((e->getObject2()->getType()) == "Ghost")) {
+		current_health--;
+		EventView ev("Health", -1, true);
+		world_manager.onEvent(&ev);
+		if (current_health == 0) {
+			world_manager.markForDelete(e->getObject1());
+			world_manager.markForDelete(e->getObject2());
+
+			gameover();
+		}
+
+		Explosion *p_explosion = new Explosion;
+		if (e->getObject1()->getType() == "Ghost") {
+			p_explosion->setPosition(e->getObject1()->getPosition());
+			world_manager.markForDelete(e->getObject1());
+		} else {
+			p_explosion->setPosition(e->getObject2()->getPosition());
+			world_manager.markForDelete(e->getObject2());
+		}
+
 	} else if (((e->getObject1()->getType()) == "points_pickup")
-			|| ((e->getObject2()->getType()) == "points_pickup")){
+			|| ((e->getObject2()->getType()) == "points_pickup")) {
 
 		//Add to points
 		EventView ev(POINTS_STRING, 30, true);
