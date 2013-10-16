@@ -65,6 +65,10 @@ void Exit::handleCollision(EventCollision* e) {
 
 		LevelManager &level_manager = LevelManager::getInstance();
 		level_manager.nextLevel();
+	} else if (e->getObject1()->getType() == "Bullet") {
+		world_manager.markForDelete(e->getObject1());
+	} else if (e->getObject2()->getType() == "Bullet"){
+		world_manager.markForDelete(e->getObject2());
 	}
 }
 
