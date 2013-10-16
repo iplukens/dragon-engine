@@ -18,6 +18,7 @@
 #include "Points.h"
 #include "EventView.h"
 #include "EventLevelUp.h"
+#include "LevelManager.h"
 
 #include <stdlib.h>
 
@@ -111,8 +112,11 @@ void Monster2::hit(EventCollision* e) {
 }
 
 Monster2::~Monster2() {
+	LevelManager &level_manager = LevelManager::getInstance();
 	WorldManager &wm = WorldManager::getInstance();
 	// send "view" event with points to interested ViewObjects
 	EventView ev(POINTS_STRING, 5, true);
 	wm.onEvent(&ev);
+
+	level_manager.objectDelete(this);
 }

@@ -66,6 +66,8 @@ class LevelManager : public Manager {
   /// Loads the next level in the list
   /// Returns true if loading succeeded, false if it failed
   bool nextLevel();
+
+  void objectDelete(Object* p_obj); //Notify the level manager when an object was deleted in the level
 };
 
 #endif //__LEVEL_MANAGER_H__
