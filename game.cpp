@@ -72,5 +72,4 @@ void loadResources() {
 	//Levels
 	level_manager.prepareLevel("levels/Level1.txt", "level_1");
 	level_manager.prepareLevel("levels/Level2.txt", "level_2");
-	level_manager.prepareLevel("levels/Level3.txt", "level_3");
 }
