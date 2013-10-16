@@ -162,6 +162,10 @@ void Monster::handleCollision(EventCollision* e) {
 	if (collision_obj1_type == "Bullet" || collision_obj2_type == "Bullet") {
 		Explosion *p_explosion = new Explosion;
 		p_explosion->setPosition(this->getPosition());
+
+		EventView ev(POINTS_STRING, 10, true);
+		world_manager.onEvent(&ev);
+
 		world_manager.markForDelete(e->getObject1());
 		world_manager.markForDelete(e->getObject2());
 	} else {
@@ -175,11 +179,7 @@ void Monster::handleCollision(EventCollision* e) {
 }
 
 Monster::~Monster() {
-	WorldManager &wm = WorldManager::getInstance();
 	LevelManager &level_manager = LevelManager::getInstance();
-	// send "view" event with points to interested ViewObjects
-	EventView ev(POINTS_STRING, 10, true);
-	wm.onEvent(&ev);
 
 	level_manager.objectDelete(this);
 }
