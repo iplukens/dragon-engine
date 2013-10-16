@@ -18,6 +18,7 @@
 #include "Explosion.h"
 #include "EventView.h"
 #include "Points.h"
+#include "LevelManager.h"
 
 #include <stdlib.h>
 
@@ -138,8 +139,11 @@ void Ghost::handleCollision(EventCollision* e) {
 }
 
 Ghost::~Ghost() {
+	LevelManager &level_manager = LevelManager::getInstance();
 	WorldManager &wm = WorldManager::getInstance();
 	// send "view" event with points to interested ViewObjects
 	EventView ev(POINTS_STRING, 10, true);
 	wm.onEvent(&ev);
+
+	level_manager.objectDelete(this);
 }

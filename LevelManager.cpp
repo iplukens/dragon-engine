@@ -311,3 +311,18 @@ bool LevelManager::nextLevel() {
 
 	return loadLevel(label);
 }
+
+void LevelManager::objectDelete(Object* p_obj){
+	if (p_obj != NULL){
+		//Old level
+		if (!current_level_obj.isEmpty()) {
+			ObjectListIterator it = current_level_obj.createIterator();
+
+			while (!it.isDone()) {
+				current_level_obj.remove(p_obj);
+
+				it.next();
+			}
+		}
+	}
+}
