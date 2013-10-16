@@ -22,7 +22,7 @@
 
 #include <stdlib.h>
 
-// I want to change this so that I can make him faster, okay? #define GHOST_VELOCITY 0.025
+#define GHOST_VELOCITY 0.025
 
 Ghost::Ghost(Position pos) {
 	ghost_velocity = 0.025;
@@ -69,7 +69,7 @@ Ghost::Ghost(Position pos) {
 	}
 
 	speed_cooldown = 30;
-	max_speed_cooldown = 30;
+	max_speed_cooldown = 10;
 
 	registerInterest(HERO_MOVE_EVENT);
 	registerInterest(STEP_EVENT);
@@ -112,14 +112,14 @@ void Ghost::move_to_hero() {
 
 	if (abs(pos.getX() - hero_pos.getX()) > abs(pos.getY() - hero_pos.getY())) {
 		if (pos.getX() > hero_pos.getX()) {
-			setXVelocity(-ghost_velocity);
+			setXVelocity(-GHOST_VELOCITY);
 		} else if (pos.getX() < hero_pos.getX()) {
-			setXVelocity(ghost_velocity);
+			setXVelocity(GHOST_VELOCITY);
 		}
 	} else if (pos.getY() > hero_pos.getY()) {
-		setYVelocity(-ghost_velocity);
+		setYVelocity(-GHOST_VELOCITY);
 	} else {
-		setYVelocity(ghost_velocity);
+		setYVelocity(GHOST_VELOCITY);
 	}
 }
 
